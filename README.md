@@ -68,7 +68,7 @@ Future improvements could include:
 * A question and answer engine perhaps trained on Wikipedia. 
 * Supporting a local copy of Wikipedia.
 * Supporting a local copy of OpenStreetMap.
-* An integrated dictionary to handle spelling, definitions, anagrams, pronouciation etc.
+* An integrated dictionary to handle spelling, definitions, anagrams, pronunciation etc.
 * An integrated thesaurus to handle synonyms, antonyms etc.
 * Time conversion.
 * A "local only" search mode.
