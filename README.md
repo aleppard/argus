@@ -51,7 +51,7 @@ You can also build and run the Docker image yourself, or build the source and de
 
 You can set Argus to be Firefox' default search engine (including running queries directly in the address bar if enabled) by following these steps:
 
-1. Visit your Argus page in Firefox.
+1. Visit the web page of your local Argus server in Firefox.
 2. Right-click on the address bar and select "Add Argus".
 2. Go to Firefox -> Preferences -> Search then select "Argus" as the Default Search Engine.
 
@@ -109,4 +109,4 @@ You can build the Docker image yourself and run it locally:
     docker build -t aleppard/argus:0.1 .
     docker run -p 3000:8080 -it aleppard/argus:0.1
 
-You may need to prefix the `docxker` commands with sudo.
+You may need to prefix the `docker` commands with sudo.
