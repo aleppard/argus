@@ -1,0 +1,26 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <profiles>
+    <profile>
+      <id>development</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <tomcat.user>argus</tomcat.user>
+        <tomcat.password>PASSWORD</tomcat.password>
+        <tomcat.host>localhost</tomcat.host>
+        <tomcat.port>80</tomcat.port>
+      </properties>
+    </profile>
+    <profile>
+      <id>production</id>
+      <properties>
+        <tomcat.user>argus</tomcat.user>
+        <tomcat.password>PASSWORD</tomcat.password>
+        <tomcat.host>server.com</tomcat.host>
+        <tomcat.port>80</tomcat.port>
+      </properties>
+    </profile>        
+  </profiles>
+</settings>
