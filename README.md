@@ -65,8 +65,8 @@ Future improvements could include:
 * Supporting search through local text, HTML or other documents.
 * Supporting search of local images using ML.
 * A ML model to translate questions into queries (e.g. BERT).
-* A question and answer engine perhaps trained on Wikipedia. 
-* Supporting a local copy of Wikipedia.
+* A question and answer engine perhaps trained on Wikipedia/[DBpedia](https://www.dbpedia.org).
+* Supporting a local copy of Wikipedia/DBpedia.
 * Supporting a local copy of OpenStreetMap.
 * An integrated dictionary to handle spelling, definitions, anagrams, pronunciation etc.
 * An integrated thesaurus to handle synonyms, antonyms etc.
@@ -75,11 +75,12 @@ Future improvements could include:
 * Cache recent queries and provide a "private" search mode to disable caching.
 * Direct links to websites or calls to external APIs for weather, currency conversion, crypto & stock quotes etc.
 * Ability to search local databases.
+* Provide a plug-in architecture to support custom queries.
 * A REST API that can be used to build private virtual assistants (e.g. replacements for Alexa, Siri, etc).
 
 ## Building From Source
 
-Install maven and jdk.
+Install maven and jdk8+.
 
     mvn package 
 
@@ -92,12 +93,12 @@ Create ~/.m2/settings.xml and set Tomcat credentials. See example_settings.xml f
 The first build and deployment can be made by running:
 
     mvn package
-    mvn carg:deploy 
+    mvn cargo:deploy 
     
 Then to re-deploy:
     
     mvn package
-    mvn carg:redeploy 
+    mvn cargo:redeploy 
 
 Pass -P argument to the deploy command to deploy to a production instance, otherwise it will deploy to the development instance. See example_settings.xml for more information.
 
