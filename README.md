@@ -89,7 +89,7 @@ Install maven and jdk8+.
 
 Install and configure [Apache Tomcat](https://tomcat.apache.org/).
 
-Create ~/.m2/settings.xml using example_settings.xml as a guide. Set Tomcat credentials.
+Create `~/.m2/settings.xml` using `example_settings.xml` as a guide. Set Tomcat credentials.
 
 The first build and deployment can be made by running:
 
@@ -101,7 +101,7 @@ Then to re-deploy:
     mvn package
     mvn cargo:redeploy 
 
-Pass -P argument to the deploy command to deploy to a production instance, otherwise it will deploy to the development instance. See example_settings.xml for more information.
+Pass `-P `argument to the deploy command to deploy to a production instance, otherwise it will deploy to the development instance. See `example_settings.xml` for more information.
 
 ### Docker
 
@@ -111,4 +111,4 @@ You can build the Docker image yourself and run it locally:
     docker build -t aleppard/argus:0.1 .
     docker run -p 3000:8080 -it aleppard/argus:0.1
 
-You may need to prefix the `docker` commands with sudo.
+You may need to prefix the `docker` commands with `sudo`.
