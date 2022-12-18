@@ -62,12 +62,13 @@ Future improvements could include:
 * Custom bang commands.
 * Support more bang commands.
 * A computation engine to handle math, logic and unit conversion queries.
-* Supporting search through local text, HTML or other documents.
-* Supporting search of local images using ML.
+* Support search through local text, HTML or other documents.
+* Support search of local images using ML.
 * A ML model to translate questions into queries (e.g. BERT).
 * A question and answer engine perhaps trained on Wikipedia/[DBpedia](https://www.dbpedia.org).
-* Supporting a local copy of Wikipedia/DBpedia.
-* Supporting a local copy of OpenStreetMap.
+* Support a local copy of Wikipedia/DBpedia.
+* Support parsing and querying the semantic web (i.e. owl, json+ld, rdf etc).
+* Support a local copy of OpenStreetMap.
 * An integrated dictionary to handle spelling, definitions, anagrams, pronunciation etc.
 * An integrated thesaurus to handle synonyms, antonyms etc.
 * Time conversion.
@@ -88,7 +89,7 @@ Install maven and jdk8+.
 
 Install and configure [Apache Tomcat](https://tomcat.apache.org/).
 
-Create ~/.m2/settings.xml and set Tomcat credentials. See example_settings.xml for an example file.
+Create ~/.m2/settings.xml using example_settings.xml as a guide. Set Tomcat credentials.
 
 The first build and deployment can be made by running:
 
