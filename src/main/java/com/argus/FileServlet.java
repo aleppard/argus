@@ -56,7 +56,6 @@ public class FileServlet extends HttpServlet
                 response.setStatus(HttpServletResponse.SC_OK);
             }
             catch (Exception exception) {
-                // MYTODO internal servlet exc
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
         }
