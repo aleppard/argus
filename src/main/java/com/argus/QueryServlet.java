@@ -29,14 +29,13 @@ public class QueryServlet extends HttpServlet
 
         final String queryParameter = request.getParameter("q");
 
-        String result = bangQuery.getResult(queryParameter);
+        QueryResult result = bangQuery.getResult(queryParameter);
         if (result == null) {
-            result = 
-                new RedirectionBuilder
-                ("https://duckduckgo.com/?q=", queryParameter)
-                .build();
+            result = new RedirectionQueryResult
+                ("https://duckduckgo.com/?q=" +
+                 URLEncoder.encode(queryParameter, "UTF-8"));
         }
             
-        response.getWriter().println(result);
+        result.setResponse(response);
     }
 }

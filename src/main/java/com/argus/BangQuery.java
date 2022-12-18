@@ -1,5 +1,7 @@
 package com.argus;
 
+import java.net.URLEncoder;
+
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
@@ -18,7 +20,7 @@ import org.yaml.snakeyaml.Yaml;
  *
  * @see https://duckduckgo.com/bang.
  */
-public class BangQuery
+public class BangQuery implements Query
 {
     private Map<String, Object> bangQueries;
 
@@ -35,8 +37,7 @@ public class BangQuery
      * (which will be a redirection to the web server that can run
      * the query directly) or null null if it's not a bang style query.
      */
-    public String getResult(final String query)
-        throws UnsupportedEncodingException {        
+    public @Override QueryResult getResult(final String query) {
         if (!query.startsWith("!")) return null;
         final int firstSpace = query.indexOf(' ');
         if (firstSpace == -1) return null;
@@ -45,9 +46,17 @@ public class BangQuery
         final Object urlObject = bangQueries.get(prefix);
         if (urlObject == null) return null;
 
-        final String url = (String)urlObject;
-        final String postPrefix = query.substring(firstSpace);
-
-        return new RedirectionBuilder(url, postPrefix).build();
+        try {
+            final String url = (String)urlObject;
+            final String postPrefix = query.substring(firstSpace);
+            
+            return new RedirectionQueryResult
+                (url + URLEncoder.encode(postPrefix,
+                                         "UTF-8"));
+        }
+        catch (UnsupportedEncodingException exception) {
+            // @todo Log this error.
+            return null;
+        }
     }
 }
