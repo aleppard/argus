@@ -1,12 +1,23 @@
 # Argus Private Search Proxy
 
-Argus is a privacy focused web search engine proxy that tries to minimise reliance on external search engines such as Bing and Google. Its purpose is to maximise the number of queries that can be performed locally, and for those queries that cannot be performed locally to maximise the number that can be performed directly on the websites that can supply answers to those queries. The remaining queries are passed to DuckDuckGo.
+Argus is a privacy focused web search engine proxy that tries to
+minimise reliance on external search engines such as Bing and
+Google. Its purpose is to maximise the number of queries that can be
+performed locally, and for those queries that cannot be performed
+locally to maximise the number that can be performed directly on the
+websites that can supply answers to those queries. The remaining
+queries are passed to DuckDuckGo. Note that queries that are forwarded to
+DuckDuckGo are no more private than those run directly on the website.
 
 ![Screenshot!](/screenshot.jpg)
 
 ## Features
 
-Currently the only feature Argus supports is implementing a subset of [DuckDuckGo's bang commands](https://duckduckgo.com/bang) to route queries directly to the desired website, e.g. typing the following:
+Currently Argus only supports a very limited set of queries:
+
+### Bang Queries
+
+Argus supports a subset of [DuckDuckGo's bang commands](https://duckduckgo.com/bang) to route queries directly to the desired website, e.g. typing the following:
 
     !a wuthering heights
 
@@ -26,6 +37,11 @@ To run the query directly on a specific search engine:
 | `!b` | Run the query directly on Bing |
 | `!ddg` | Run the query directly on DuckDuckGo |
 | `!g` | Run the query directly on Google |
+
+### ISO 8601 / UTC Dates
+
+Argus supports converting dates in the ISO 8601 / UTC format
+(e.g. 2022-12-24T01:08:48Z) to the local time.
 
 ## How to Run
 
@@ -59,25 +75,49 @@ You can set Argus to be Firefox' default search engine (including running querie
 
 Future improvements could include:
 
+* Set up Onion site running Argus.
+* Add "copy to clipboard" button for locally returned results.
+* Add ability to hit return twice to forward locally returned results
+  directly to DuckDuckGo (e.g. if a locally returned result is not
+  sufficient).
+* Add ability to specify a different default search engine than DuckDuckGo.
 * Custom bang commands.
 * Support more bang commands.
 * A computation engine to handle math, logic and unit conversion queries.
 * Support search through local text, HTML or other documents.
 * Support search of local images using ML.
 * A ML model to translate questions into queries (e.g. BERT).
-* A question and answer engine perhaps trained on Wikipedia/[DBpedia](https://www.dbpedia.org).
-* Support a local copy of Wikipedia/DBpedia.
+* A question and answer engine perhaps trained on Wikipedia/Wikidata/[DBpedia](https://www.dbpedia.org).
+* Support a local copy of Wikipedia/Wikidata/DBpedia.
 * Support parsing and querying the semantic web (i.e. owl, json+ld, rdf etc).
 * Support a local copy of OpenStreetMap.
 * An integrated dictionary to handle spelling, definitions, anagrams, pronunciation etc.
 * An integrated thesaurus to handle synonyms, antonyms etc.
-* Time conversion.
+* Ability to translate words and phrases.
+* Time conversion to other time zones including finding the day of the
+  week that a date falls on.
 * A "local only" search mode.
 * Cache recent queries and provide a "private" search mode to disable caching.
 * Direct links to websites or calls to external APIs for weather, currency conversion, crypto & stock quotes etc.
 * Ability to search local databases.
 * Provide a plug-in architecture to support custom queries.
-* A REST API that can be used to build private virtual assistants (e.g. replacements for Alexa, Siri, etc).
+* A REST API that can be used to build private virtual assistants
+  (e.g. replacements for Alexa, Siri, etc).
+* Calculate hashes of UTF-8 text strings.
+* Random number generator:
+  * Hex strings (e.g. "random hex")
+  * UUIDs (e.g. "random uuid")
+  * Integers (e.g. "random int", "randon long").
+* Detect and decode encoded data without context, including:
+  * JWT (Json Web Tokens)
+  * Unicode code point
+  * Base64
+  * RGB Colours (#12FC32)
+  * Basic ciphers (e.g. Caeser, Vignere, etc)
+  * Any number and return as much data about that number (e.g. is it
+    prime, atomic element with given number if any, etc).
+  * Bible verse
+  * Post/zip codes
 
 ## Building From Source
 

@@ -12,7 +12,7 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <style>
 html, body {
-  height: 100%;
+  min-height: 100%;
   overflow: hidden;
   width: 100%;
   position: fixed;
@@ -24,19 +24,20 @@ body {
   background-color: #171717;
 }
 
-h1 {
+.result {
+  display: flex;
+  justify-content: center; 
   color: #eeeeee;
   font-family: sans-serif;
-  font-size: 48px;
-  font-weight: lighter;
+  font-size: 18px;
+  padding-top: 64px;
 }
 
-.centre {
+.query {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  flex-direction: column;
+  padding-top: 4px;
 }
 
 .query-line {
@@ -74,8 +75,7 @@ window.onload = function() {
     timeZoneField.value = timeZone;
 };
 </script>
-<div class="centre">
-  <h1>A.</h1>
+<div class="query">
   <form action="/query">
     <div class="query-line">
       <div class="magnifying-glass">
@@ -85,9 +85,12 @@ window.onload = function() {
         </svg>
       </div>
       <input id="time-zone-field" type="hidden" name="time_zone" value="" />
-      <input class="textbox" type="text" name="q" title="" autofocus required>
+      <input class="textbox" type="text" value="${query}" name="q" title="" autofocus required>
     </div>        
   </form>
-</div>
+  </div>
+  <div class="result">
+    ${result}
+  </div>
 </body>
 </html>

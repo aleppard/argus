@@ -37,7 +37,8 @@ public class BangQuery implements Query
      * (which will be a redirection to the web server that can run
      * the query directly) or null null if it's not a bang style query.
      */
-    public @Override QueryResult getResult(final String query) {
+    public @Override QueryResult getResult(final Context context,
+                                           final String query) {
         if (!query.startsWith("!")) return null;
         final int firstSpace = query.indexOf(' ');
         if (firstSpace == -1) return null;

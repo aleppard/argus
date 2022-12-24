@@ -12,5 +12,5 @@ public interface Query {
      * Try to fufill the given query. If the query can be fufilled return
      * the query result otherwise returns null.
      */
-    public QueryResult getResult(final String query);
+    public QueryResult getResult(final Context context, final String query);
 }
