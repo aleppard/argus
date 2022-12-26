@@ -52,6 +52,14 @@ Argus supports generating a limited set of random numbers:
 | random hex | 946B2D46764836F904A0B4B842571469C83F6AF2AF619CAC0973B989A34C0C9C | 
 | random uuid | 3c68645a-ed8b-4b28-81cc-8faa0bbb5bbe |
 
+### Base 64 Decoding
+
+Argus supports decoding UTF-8 base64 encoded strings.
+
+| example query | result |
+| --- | --- |
+| dXNlcjpwYXNzd29yZAo= | user:password |
+
 ## How to Run
 
 ### Docker
@@ -120,7 +128,6 @@ Future improvements could include:
 * Detect and decode encoded data without context, including:
   * JWT (Json Web Tokens)
   * Unicode code point
-  * Base64
   * RGB Colours (#12FC32)
   * Basic ciphers (e.g. Caeser, Vignere, etc)
   * Any number and return as much data about that number (e.g. is it

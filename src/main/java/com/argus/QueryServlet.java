@@ -25,12 +25,13 @@ public class QueryServlet extends HttpServlet
     private Query[] queries =
         new Query[]{new BangQuery(),
                     new Iso8601Query(),
-                    new RandomNumberGeneratorQuery()};
+                    new RandomNumberGeneratorQuery(),
+                    new Base64DecoderQuery()};
     
     @Override public void doGet(HttpServletRequest request,
                                 HttpServletResponse response)
         throws IOException {
-
+        
         // @todo Should we also collapse double spaces here?
         final String queryParameter = request.getParameter("q").trim();
         final Context context = new Context(request.getParameter("time_zone"));
