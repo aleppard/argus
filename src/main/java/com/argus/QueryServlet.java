@@ -24,13 +24,15 @@ public class QueryServlet extends HttpServlet
     // @todo Come up with a more pluggable query mechanism.
     private Query[] queries =
         new Query[]{new BangQuery(),
-                    new Iso8601Query()};
+                    new Iso8601Query(),
+                    new RandomNumberGeneratorQuery()};
     
     @Override public void doGet(HttpServletRequest request,
                                 HttpServletResponse response)
         throws IOException {
 
-        final String queryParameter = request.getParameter("q");
+        // @todo Should we also collapse double spaces here?
+        final String queryParameter = request.getParameter("q").trim();
         final Context context = new Context(request.getParameter("time_zone"));
         
         // @todo Consider trying all queries as the same input might

@@ -1,13 +1,13 @@
 # Argus Private Search Proxy
 
 Argus is a privacy focused web search engine proxy that tries to
-minimise reliance on external search engines such as Bing and
-Google. Its purpose is to maximise the number of queries that can be
+minimise reliance on external search engines (such as Google) and
+single function websites (e.g. time zone converters). Its purpose is to maximise the number of queries that can be
 performed locally, and for those queries that cannot be performed
 locally to maximise the number that can be performed directly on the
 websites that can supply answers to those queries. The remaining
 queries are passed to DuckDuckGo. Note that queries that are forwarded to
-DuckDuckGo are no more private than those run directly on the website.
+DuckDuckGo are no more private than those run directly on their website.
 
 ![Screenshot!](/screenshot.jpg)
 
@@ -42,6 +42,15 @@ To run the query directly on a specific search engine:
 
 Argus supports converting dates in the ISO 8601 / UTC format
 (e.g. 2022-12-24T01:08:48Z) to the local time.
+
+### Random Number Generation
+
+Argus supports generating a limited set of random numbers:
+
+| example query | result |
+| --- | --- |
+| random hex | 946B2D46764836F904A0B4B842571469C83F6AF2AF619CAC0973B989A34C0C9C | 
+| random uuid | 3c68645a-ed8b-4b28-81cc-8faa0bbb5bbe |
 
 ## How to Run
 
@@ -104,10 +113,10 @@ Future improvements could include:
 * A REST API that can be used to build private virtual assistants
   (e.g. replacements for Alexa, Siri, etc).
 * Calculate hashes of UTF-8 text strings.
-* Random number generator:
-  * Hex strings (e.g. "random hex")
-  * UUIDs (e.g. "random uuid")
+* More random number/string generation:
   * Integers (e.g. "random int", "randon long").
+  * Specify number of bits.
+  * Specify UUID version.
 * Detect and decode encoded data without context, including:
   * JWT (Json Web Tokens)
   * Unicode code point
@@ -118,6 +127,7 @@ Future improvements could include:
     prime, atomic element with given number if any, etc).
   * Bible verse
   * Post/zip codes
+* Ability to upload CSV files or spreadsheets and then query those.
 
 ## Building From Source
 
@@ -151,4 +161,6 @@ You can build the Docker image yourself and run it locally:
     docker build -t aleppard/argus:0.1 .
     docker run -p 3000:8080 -it aleppard/argus:0.1
 
+Pass `-d` argument to `docker run` to run detached (i.e. in the background).
+    
 You may need to prefix the `docker` commands with `sudo`.
