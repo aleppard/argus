@@ -1,5 +1,8 @@
 package com.argus;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import freemarker.core.PlainTextOutputFormat;
 
 import freemarker.template.Configuration;
@@ -13,6 +16,10 @@ import no.api.freemarker.java8.Java8ObjectWrapper;
  * Class to configure the template engine used.
  */
 public class TemplateEngine {
+
+    private static final Logger LOGGER =
+        Logger.getLogger(TemplateEngine.class.getName());
+    
     private Configuration xmlConfiguration;
 
     private final static Version FREEMARKER_VERSION =
@@ -39,6 +46,8 @@ public class TemplateEngine {
             return xmlConfiguration.getTemplate(templateName);
         }
         catch (Exception exception) {
+            LOGGER.log(Level.SEVERE, "Error with template " + templateName,
+                       exception); 
             return null;
         }
     }
