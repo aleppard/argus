@@ -41,7 +41,7 @@ public class SingleQueryResult implements QueryResult {
         arguments.put("result", result);
         try {
             Template template =
-                templateEngine.getTemplate("web/single-query-result.html");
+                templateEngine.getTemplate("templates/single-query-result.html");
             template.process(arguments, response.getWriter());
             response.setStatus(HttpServletResponse.SC_OK);
         }
