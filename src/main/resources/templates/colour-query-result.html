@@ -1,0 +1,17 @@
+<#import "./core.ftl" as core>
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <@core.meta/>
+    <style>
+      <@core.style/>
+      body {
+        background-color: ${colour};
+      }
+    </style>
+  </head>
+  <body>
+    <@core.script/>
+    <@core.query query/>
+  </body>
+</html>

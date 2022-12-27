@@ -13,7 +13,6 @@
 </#macro>
 
 <#macro style>
-<style>
 html, body {
   min-height: 100%;
   overflow: hidden;
@@ -25,15 +24,6 @@ html, body {
 
 body {
   background-color: #171717;
-}
-
-.result {
-  display: flex;
-  justify-content: center; 
-  color: #eeeeee;
-  font-family: sans-serif;
-  font-size: 18px;
-  padding-top: 64px;
 }
 
 .query {
@@ -66,7 +56,6 @@ body {
   background-color: #404040;
   color: #eeeeee;
 }
-</style>	
 </#macro>
 
 <#macro script>

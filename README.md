@@ -60,6 +60,14 @@ Argus supports decoding UTF-8 base64 encoded strings.
 | --- | --- |
 | dXNlcjpwYXNzd29yZAo= | user:password |
 
+### Colour Decoding
+
+Argus supports decoding a described colour string and displaying that colour.
+
+| example query | result |
+| --- | --- |
+| #FF0000 | Background colour changes to red |
+
 ## How to Run
 
 ### Docker
@@ -121,6 +129,8 @@ Future improvements could include:
 * A REST API that can be used to build private virtual assistants
   (e.g. replacements for Alexa, Siri, etc).
 * Calculate hashes of UTF-8 text strings.
+* Additional colour decoding, naming of colour and coverting to other
+  colour spaces.
 * More random number/string generation:
   * Integers (e.g. "random int", "randon long").
   * Specify number of bits.
@@ -128,7 +138,6 @@ Future improvements could include:
 * Detect and decode encoded data without context, including:
   * JWT (Json Web Tokens)
   * Unicode code point
-  * RGB Colours (#12FC32)
   * Basic ciphers (e.g. Caeser, Vignere, etc)
   * Any number and return as much data about that number (e.g. is it
     prime, atomic element with given number if any, etc).

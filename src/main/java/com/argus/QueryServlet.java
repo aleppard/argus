@@ -24,6 +24,7 @@ public class QueryServlet extends HttpServlet
     // @todo Come up with a more pluggable query mechanism.
     private Query[] queries =
         new Query[]{new BangQuery(),
+                    new ColourQuery(),
                     new Iso8601Query(),
                     new RandomNumberGeneratorQuery(),
                     new Base64DecoderQuery()};
