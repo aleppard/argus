@@ -29,7 +29,7 @@ public class Base64DecoderQuery implements Query
      * Try to decode the given string using the given decoder.
      *
      * @return the decoded string as a query result or null if
-     * unable to decoe.
+     * unable to decode.
      */
     private QueryResult tryDecode(Base64.Decoder decoder,
                                   final String query) {
