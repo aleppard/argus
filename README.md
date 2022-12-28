@@ -9,6 +9,13 @@ websites that can supply answers to those queries. The remaining
 queries are passed to DuckDuckGo. Note that queries that are forwarded to
 DuckDuckGo are no more private than those run directly on their website.
 
+Argus provides three major benefits over using a search engine
+directly:
+
+* Enhanced privacy.
+* Increased performance for queries that can be performed locally.
+* Reduces reliance on network access. Locally performed queries do not require network access.
+
 ![Screenshot!](/screenshot.jpg)
 
 ## Features
@@ -134,6 +141,7 @@ Future improvements could include:
 * Calculate hashes of UTF-8 text strings.
 * Additional colour decoding, naming of colour and coverting to other
   colour spaces.
+* Ability to search and return books that are no longer under copyright.
 * More random number/string generation:
   * Integers (e.g. "random int", "randon long").
   * Specify number of bits.
