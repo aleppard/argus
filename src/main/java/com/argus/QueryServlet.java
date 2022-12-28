@@ -27,6 +27,7 @@ public class QueryServlet extends HttpServlet
                     new ColourQuery(),
                     new Iso8601Query(),
                     new RandomNumberGeneratorQuery(),
+                    new JwtDecoderQuery(),
                     new Base64DecoderQuery()};
     
     @Override public void doGet(HttpServletRequest request,
