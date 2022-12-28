@@ -14,7 +14,7 @@ directly:
 
 * Enhanced privacy.
 * Increased performance for queries that can be performed locally.
-* Reduces reliance on network access. Locally performed queries do not require network access.
+* Reduced reliance on network access. Locally performed queries do not require network access.
 
 ![Screenshot!](/screenshot.jpg)
 
