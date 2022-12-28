@@ -52,13 +52,15 @@ Argus supports generating a limited set of random numbers:
 | random hex | 946B2D46764836F904A0B4B842571469C83F6AF2AF619CAC0973B989A34C0C9C | 
 | random uuid | 3c68645a-ed8b-4b28-81cc-8faa0bbb5bbe |
 
-### Base 64 Decoding
+### Base64 & JWT Decoding
 
-Argus supports decoding UTF-8 base64 encoded strings.
+Argus supports decoding UTF-8 base64 encoded strings and JWTs (JSON
+Web Tokens):
 
 | example query | result |
 | --- | --- |
 | dXNlcjpwYXNzd29yZAo= | user:password |
+| ey...J9.ey...fQ.Sf...5c | Header { "typ: "JWT", ... } |
 
 ### Colour Decoding
 
@@ -124,7 +126,8 @@ Future improvements could include:
 * A "local only" search mode.
 * Cache recent queries and provide a "private" search mode to disable caching.
 * Direct links to websites or calls to external APIs for weather, currency conversion, crypto & stock quotes etc.
-* Ability to search local databases.
+* Ability to search local databases / uploaded spreadsheets / uploaded
+  csv files.
 * Provide a plug-in architecture to support custom queries.
 * A REST API that can be used to build private virtual assistants
   (e.g. replacements for Alexa, Siri, etc).
@@ -136,14 +139,12 @@ Future improvements could include:
   * Specify number of bits.
   * Specify UUID version.
 * Detect and decode encoded data without context, including:
-  * JWT (Json Web Tokens)
   * Unicode code point
   * Basic ciphers (e.g. Caeser, Vignere, etc)
   * Any number and return as much data about that number (e.g. is it
     prime, atomic element with given number if any, etc).
   * Bible verse
   * Post/zip codes
-* Ability to upload CSV files or spreadsheets and then query those.
 
 ## Building From Source
 
