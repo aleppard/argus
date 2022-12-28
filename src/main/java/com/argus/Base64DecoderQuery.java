@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * A query that decodes base-64 sequences.
+ * A query that decodes Base64 sequences.
  *
  * @see https://en.wikipedia.org/wiki/Base64
  * @todo Support "decode xxxx".
