@@ -54,6 +54,7 @@ public class QueryServlet extends HttpServlet
         // If we couldn't process the query locally then redirect
         // to DuckDuckGo.
         if (result == null) {
+            // @todo This should be configurable.
             result = new RedirectionQueryResult
                 ("https://duckduckgo.com/?q=" +
                  URLEncoder.encode(queryParameter, "UTF-8"));
