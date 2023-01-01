@@ -36,12 +36,14 @@ Other supported bang commands are:
 | --- | --- |
 | `!so` | Run the query directly on StackOverflow |
 | `!w` | Run the query direclty on Wikipedia |
+| `!yt` | Run the query direclty on YouTube |
 
 To run the query directly on a specific search engine:
 
 | bang command | search engine |
 | --- | --- |
 | `!b` | Run the query directly on Bing |
+| `!brave` | Run the query directly on Brave |
 | `!ddg` | Run the query directly on DuckDuckGo |
 | `!g` | Run the query directly on Google |
 

@@ -1,7 +1,9 @@
 # https://duckduckgo.com/bang
 a: https://amazon.com/s?k=
 b: https://www.bing.com/search?q=
+brave: https://search.brave.com/search?q=
 ddg: https://duckduckgo.com/?q=
 g: https://google.com/search?q=
 so: https://stackoverflow.com/search?q=
 w: https://www.wikipedia.org/search-redirect.php?search=
+yt: https://www.youtube.com/results?search_query=
