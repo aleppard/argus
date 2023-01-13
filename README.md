@@ -34,6 +34,7 @@ Other supported bang commands are:
 
 | bang command | action |
 | --- | --- |
+| `!gh` | Run the query directly on GitHub |
 | `!so` | Run the query directly on StackOverflow |
 | `!w` | Run the query direclty on Wikipedia |
 | `!yt` | Run the query direclty on YouTube |
@@ -46,6 +47,10 @@ To run the query directly on a specific search engine:
 | `!brave` | Run the query directly on Brave |
 | `!ddg` | Run the query directly on DuckDuckGo |
 | `!g` | Run the query directly on Google |
+
+Queries can be prefixed with "@" for Firefox style at queries, e.g.
+
+    @amazon Wuthering heights
 
 ### ISO 8601 / UTC Dates
 
@@ -131,7 +136,7 @@ Future improvements could include:
 * An integrated thesaurus to handle synonyms, antonyms etc.
 * Ability to translate words and phrases.
 * Time conversion to other time zones including finding the day of the
-  week that a date falls on.
+  week that a date falls on, and finding the number of days until a given date.
 * A "local only" search mode.
 * Cache recent queries and provide a "private" search mode to disable caching.
 * Direct links to websites or calls to external APIs for weather, currency conversion, crypto & stock quotes etc.
@@ -155,6 +160,8 @@ Future improvements could include:
     prime, atomic element with given number if any, etc).
   * Bible verse
   * Post/zip codes
+  * Abbreviations + acronyms including country codes, file extensions,
+    etc.
 
 ## Building From Source
 

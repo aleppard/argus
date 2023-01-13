@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
@@ -14,6 +15,10 @@ import org.yaml.snakeyaml.Yaml;
  *
  * !w half life
  *
+ * And also Firefox at (@) queries, e.g.
+ *
+ * @amazon wuthering heights
+ *
  * Would search for the term "half life" in Wikipedia.
  *
  * The supported bang queries are stored in src/main/resources/bangs.yaml.
@@ -22,14 +27,25 @@ import org.yaml.snakeyaml.Yaml;
  */
 public class BangQuery implements Query
 {
-    private Map<String, Object> bangQueries;
+    private Map<String, String> bangQueries = new HashMap<>();
 
     public BangQuery() {
         Yaml yaml = new Yaml();
         InputStream inputStream = this.getClass()
             .getClassLoader()
             .getResourceAsStream("bangs.yaml");
-        bangQueries = yaml.load(inputStream);
+
+        // Load list of bang queries, e.g. x, y, z: URL
+        Map<String, Object> bangListQueries = yaml.load(inputStream);
+
+        for (Map.Entry<String, Object> entry : bangListQueries.entrySet()) {
+            // Add each bang alternate, e.g. gh, git, github.
+            final String[] bangs = entry.getKey().split(",");
+            for (String bang : bangs) {
+                final String url = (String)entry.getValue();
+                bangQueries.put(bang.trim(), url.trim());
+            }
+        }
     }
 
     /**
@@ -39,16 +55,15 @@ public class BangQuery implements Query
      */
     public @Override QueryResult getResult(final Context context,
                                            final String query) {
-        if (!query.startsWith("!")) return null;
+        if (!query.startsWith("!") && !query.startsWith("@")) return null;
         final int firstSpace = query.indexOf(' ');
         if (firstSpace == -1) return null;
         
         final String prefix = query.substring(1, firstSpace);
-        final Object urlObject = bangQueries.get(prefix);
-        if (urlObject == null) return null;
+        final String url = bangQueries.get(prefix);
+        if (url == null) return null;
 
         try {
-            final String url = (String)urlObject;
             final String postPrefix = query.substring(firstSpace);
             
             return new RedirectionQueryResult
