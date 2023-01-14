@@ -28,7 +28,11 @@ public class QueryServlet extends HttpServlet
                     new Iso8601Query(),
                     new RandomNumberGeneratorQuery(),
                     new JwtDecoderQuery(),
-                    new Base64DecoderQuery()};
+                    new Base64DecoderQuery(),
+                    new MathQuery()};
+
+    public QueryServlet() {
+    }
     
     @Override public void doGet(HttpServletRequest request,
                                 HttpServletResponse response)
@@ -38,11 +42,12 @@ public class QueryServlet extends HttpServlet
         final String queryParameter = request.getParameter("q").trim();
         final Context context = new Context(request.getParameter("time_zone"));
         
-        // @todo Consider trying all queries as the same input might
-        // triggger multiple results. We might also want to include
-        // a "confidence" value so that we can ignore or deprioritise
+        // @todo Consider trying all queries, not just until we get the
+        // first match, as there may be multiple results. We might also want
+        // to include a "confidence" value so that we can ignore or deprioritise
         // low value confidence results if another result has a higher
         // confidence.
+        // @todo Run queries concurrently.
         QueryResult result = null;
         for (final Query query : queries) {
             result = query.getResult(context, queryParameter);
@@ -61,5 +66,9 @@ public class QueryServlet extends HttpServlet
         }
             
         result.setResponse(response);
+    }
+
+    @Override public void destroy() {
+        queries = null;
     }
 }
