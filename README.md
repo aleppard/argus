@@ -1,8 +1,9 @@
 # Argus Private Search Proxy
 
-Argus is a privacy focused web search engine proxy that tries to
-minimise reliance on external search engines (such as Google) and
-single function websites (e.g. time zone converters). Its purpose is to maximise the number of queries that can be
+Argus is a privacy focused web search engine proxy and knowledge
+engine that tries to minimise reliance on external search engines 
+(such as Google) and single function websites (e.g. time zone
+converters). Its purpose is to maximise the number of queries that can be
 performed locally, and for those queries that cannot be performed
 locally to maximise the number that can be performed directly on the
 websites that can supply answers to those queries. The remaining
@@ -52,6 +53,13 @@ Queries can be prefixed with "@" for Firefox style at queries, e.g.
 
     @amazon Wuthering heights
 
+### Math Engine
+
+Argus has an [integrated math engine](https://bitbucket.org/axelclk/symja_android_library/src/master/).
+
+| example query | result |
+| sin(30°) | 0.5 |
+
 ### ISO 8601 / UTC Dates
 
 Argus supports converting dates in the ISO 8601 / UTC format
@@ -78,7 +86,7 @@ Web Tokens):
 
 ### Colour Decoding
 
-Argus supports decoding a described colour string and displaying that colour.
+Argus supports decoding an encoded colour string and displaying that colour.
 
 | example query | result |
 | --- | --- |
@@ -116,7 +124,7 @@ You can set Argus to be Firefox' default search engine (including running querie
 
 Future improvements could include:
 
-* Set up Onion site running Argus.
+* Set up site running Argus (possibly an Onion site).
 * Add "copy to clipboard" button for locally returned results.
 * Add ability to hit return twice to forward locally returned results
   directly to DuckDuckGo (e.g. if a locally returned result is not
@@ -124,7 +132,12 @@ Future improvements could include:
 * Add ability to specify a different default search engine than DuckDuckGo.
 * Custom bang commands.
 * Support more bang commands.
-* A computation engine to handle math, logic and unit conversion queries.
+* Improved math support.
+  * Better support for internal math library (e.g. expose symbolic functionality).
+  * A REPL style console to perform multiple math operations.
+  * Display equations in MathML.
+  * Plot equations.
+* A computation engine to handle unit conversion.
 * Support search through local text, HTML or other documents.
 * Support search of local images using ML.
 * A ML model to translate questions into queries (e.g. BERT).
@@ -148,7 +161,15 @@ Future improvements could include:
 * Calculate hashes of UTF-8 text strings.
 * Additional colour decoding, naming of colour and coverting to other
   colour spaces.
-* Ability to search and return books that are no longer under copyright.
+* Ability to search and return books that are no longer under
+  copyright.
+* Identity (and continue) numeric sequences.
+* Chemistry:
+  * Enter chemical formula, e.g. C2H5OH and return the chemical name and
+    structure.
+  * Enter chemical name and show formula and structure.
+  * Solve or query chemistry equations (e.g. H2O + Li returns 
+    2H2O + 2Li -> LiOH (aq) + H2(g) + heat).
 * More random number/string generation:
   * Integers (e.g. "random int", "randon long").
   * Specify number of bits.
@@ -157,7 +178,7 @@ Future improvements could include:
   * Unicode code point
   * Basic ciphers (e.g. Caeser, Vignere, etc)
   * Any number and return as much data about that number (e.g. is it
-    prime, atomic element with given number if any, etc).
+    prime, factors, atomic element with given number if any, etc).
   * Bible verse
   * Post/zip codes
   * Abbreviations + acronyms including country codes, file extensions,
@@ -165,7 +186,7 @@ Future improvements could include:
 
 ## Building From Source
 
-Install maven and jdk8+.
+Install maven and jdk11+.
 
     mvn package 
 
