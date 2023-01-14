@@ -15,11 +15,11 @@ import org.yaml.snakeyaml.Yaml;
  *
  * !w half life
  *
+ * Would search for the term "half life" in Wikipedia.
+ *
  * And also Firefox at (@) queries, e.g.
  *
  * @amazon wuthering heights
- *
- * Would search for the term "half life" in Wikipedia.
  *
  * The supported bang queries are stored in src/main/resources/bangs.yaml.
  *
