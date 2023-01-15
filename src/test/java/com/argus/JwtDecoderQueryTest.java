@@ -1,5 +1,6 @@
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
 
 import com.argus.Context;
 import com.argus.JwtDecoderQuery;
@@ -10,8 +11,7 @@ import com.argus.QueryResult;
  */
 public class JwtDecoderQueryTest {
 
-    // @todo For some reason this test case is not run by 'mvn test'?
-    @Test void test() {
+    @Test public void test() {
         JwtDecoderQuery query = new JwtDecoderQuery();
         Context context = new Context(null);
         
