@@ -43,6 +43,10 @@ public class SingleQueryResult implements QueryResult {
         this.result = result;
         this.fixedWidth = fixedWidth;
     }
+
+    public String getResult() {
+        return this.result;
+    }
     
     @Override public void setResponse(HttpServletResponse response)
         throws IOException {

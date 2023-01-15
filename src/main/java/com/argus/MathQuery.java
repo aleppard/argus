@@ -1,5 +1,7 @@
 package com.argus;
 
+import java.util.logging.Logger;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +22,9 @@ import org.matheclipse.core.interfaces.IExpr;
  */
 public class MathQuery implements Query
 {
+    private static final Logger LOGGER =
+        Logger.getLogger(MathQuery.class.getName());
+    
     // @todo Remove this memory leak on shutdown.
     // 3-Jan-2023 23:49:17.248 SEVERE [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks The web application [ROOT] created a ThreadLocal with key of type [java.lang.ThreadLocal.SuppliedThreadLocal] (value [java.lang.ThreadLocal$SuppliedThreadLocal@27b74311]) and a value of type [org.matheclipse.core.eval.EvalEngine] (value [org.matheclipse.core.eval.EvalEngine@23bfc29c]) but failed to remove it when the web application was stopped. Threads are going to be renewed over time to try and avoid a probable memory leak.
     private ExprEvaluator expressionEvaluator =
@@ -28,7 +33,7 @@ public class MathQuery implements Query
     // Make sure the query contains a mathematical symbol even if it's
     // just a parenthesis.
     private Pattern notLetterOrNumberOrBasicPunctuation =
-        Pattern.compile("[^0-9a-zA-Z,\\.\\?]");
+        Pattern.compile("[^0-9a-zA-Z ,\\.\\?]");
 
     public MathQuery() {
         // Return numeric results not just symbolic results.
