@@ -133,7 +133,7 @@ You can set Argus to be Firefox' default search engine (including running querie
 
 Future improvements could include:
 
-* Set up site running Argus (possibly an Onion site).
+* Set up a public site running Argus (possibly an Onion site).
 * Add "copy to clipboard" button for locally returned results.
 * Add ability to hit return twice to forward locally returned results
   directly to DuckDuckGo (e.g. if a locally returned result is not
@@ -148,6 +148,11 @@ Future improvements could include:
   * Plot equations.
 * A computation engine to handle unit conversion.
 * Support search through local text, HTML or other documents.
+* Add ability to upload HTML archives and have Argus store, index and
+  search those pages.
+* Add ability to index (and optionally download) specific websites and
+  perhaps share those index results with other Argus users,
+  e.g. peer-to-peer web indexing.
 * Support search of local images using ML.
 * A ML model to translate questions into queries (e.g. BERT).
 * A question and answer engine perhaps trained on Wikipedia/Wikidata/[DBpedia](https://www.dbpedia.org).
@@ -172,7 +177,7 @@ Future improvements could include:
   colour spaces.
 * Ability to search and return books that are no longer under
   copyright.
-* Identity (and continue) numeric sequences.
+* Identify (and continue) numeric sequences.
 * Chemistry:
   * Enter chemical formula, e.g. C2H5OH and return the chemical name and
     structure.
@@ -183,6 +188,8 @@ Future improvements could include:
   * Integers (e.g. "random int", "randon long").
   * Specify number of bits.
   * Specify UUID version.
+  * Generate random passwords and passphrases.
+  * Add entropy on client-side to improve secret generation.
 * Detect and decode encoded data without context, including:
   * Unicode code point
   * Basic ciphers (e.g. Caeser, Vignere, etc)
