@@ -14,9 +14,9 @@ import org.matheclipse.core.interfaces.IExpr;
  * @todo Support sin 30, sine of 30 etc.
  * @todo Do more preprocessing, e.g. "plus" -> "+", "sine" -> "sin(x)" etc.
  * @todo Handle x << y, y >> x.
- * @todo Support symbolic processing, e.g. queries about differentials
- * which the underlying library supports. Then return the results using
- * MathML to display properly in the browser.
+ * @todo Support symbolic processing, e.g. queries about differentiation,
+ * integration etc which the underlying library supports. Then return the 
+ * results using MathML to display properly in the browser.
  */
 public class MathQuery implements Query
 {

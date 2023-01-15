@@ -29,6 +29,7 @@ public class QueryServlet extends HttpServlet
                     new RandomNumberGeneratorQuery(),
                     new JwtDecoderQuery(),
                     new Base64DecoderQuery(),
+                    new WordPatternQuery(),
                     new MathQuery()};
 
     public QueryServlet() {

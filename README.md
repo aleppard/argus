@@ -92,6 +92,14 @@ Argus supports decoding an encoded colour string and displaying that colour.
 | --- | --- |
 | #FF0000 | Background colour changes to red |
 
+### Word Pattern Matching
+
+Argus supports matching words based on a pattern.
+
+| example query | result |
+| --- | --- |
+| h?ve | have, hive, hove | 
+
 ## How to Run
 
 ### Docker
