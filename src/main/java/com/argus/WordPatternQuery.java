@@ -96,7 +96,7 @@ public class WordPatternQuery implements Query
         }
 
         // Ignore any query that doesn't contain a question mark.
-        if (!query.contains('?')) {
+        if (!query.contains("?")) {
             return null;
         }
 
