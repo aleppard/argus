@@ -58,6 +58,7 @@ Queries can be prefixed with "@" for Firefox style at queries, e.g.
 Argus has an [integrated math engine](https://bitbucket.org/axelclk/symja_android_library/src/master/).
 
 | example query | result |
+| --- | --- |
 | sin(30°) | 0.5 |
 
 ### ISO 8601 / UTC Dates
