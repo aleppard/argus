@@ -47,7 +47,8 @@ body {
 }
 
 .textbox {
-  border: 0px; 
+  border: 0px;
+  border-radius: 0;
   height: 40px;
   margin-left: 0px;  
   padding-left: 10px;
