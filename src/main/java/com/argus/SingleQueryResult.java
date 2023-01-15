@@ -22,6 +22,7 @@ public class SingleQueryResult implements QueryResult {
     
     private String query;
     private String result;
+    private boolean fixedWidth = false;
 
     /**
      * @param query the user's query.
@@ -32,13 +33,33 @@ public class SingleQueryResult implements QueryResult {
         this.result = result;
     }
 
+    /**
+     * @param query the user's query.
+     * @param result the result for that query.
+     */
+    public SingleQueryResult(final String query, final String result,
+                             boolean fixedWidth) {
+        this.query = query;
+        this.result = result;
+        this.fixedWidth = fixedWidth;
+    }
+    
     @Override public void setResponse(HttpServletResponse response)
         throws IOException {
 
         TemplateEngine templateEngine = new TemplateEngine();
         Map<String, Object> arguments = new HashMap<>();
+        
         arguments.put("query", query);
-        arguments.put("result", result);
+
+        // @todo We should not include HTML code here.
+        if (fixedWidth) {
+            arguments.put("result", "<pre>" + result + "</pre>");
+        }
+        else {
+            arguments.put("result", result);
+        }
+        
         try {
             Template template =
                 templateEngine.getTemplate("templates/single-query-result.html");
