@@ -111,7 +111,10 @@ The simplest way to run is using Docker. Install [Docker](https://www.docker.com
 
 or
 
-    sudo docker run --rm -p 3000:8080 -it aleppard/argus:0.1
+    docker run --rm -p 3000:8080 -it aleppard/argus:0.1 -d
+    docker stop <container id>
+
+You may need to prefix the `docker` commands with `sudo`.
 
 You can then visit <http://localhost:3000> in your browser.
 
