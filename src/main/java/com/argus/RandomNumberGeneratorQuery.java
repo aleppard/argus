@@ -9,7 +9,7 @@ import java.util.UUID;
  *
  * @todo Expand query to generate other randon numbers, strings,
  * phrases etc.
- * @todo Expand query to have finer controls (e.g random 32bit hex).
+ * @todo Expand query to have finer controls (e.g random 32 bit hex).
  * @todo To be more secure it would be better to generate a random number
  * on the server and then combine it with a random number generated on
  * the client (via Javascript). This way the client would get a more
@@ -21,8 +21,8 @@ public class RandomNumberGeneratorQuery implements Query
     private SecureRandom random = new SecureRandom();
     
     // @todo Support different UUID types.
-    private QueryResult checkRandomUuidQuery(final String originalQuery,
-                                             final String normalisedQuery) {
+    private QueryResult tryRandomUuidQuery(final String originalQuery,
+                                           final String normalisedQuery) {
         // @todo Implement a more robust, flexible and reusable matching
         // scheme.
         if (!normalisedQuery.equals("random uuid") &&
@@ -32,9 +32,24 @@ public class RandomNumberGeneratorQuery implements Query
         return new SingleQueryResult(originalQuery, uuid.toString());
     }
 
-    // @todo Support different lenghts (e.g. specify number of bits or bytes).
-    private QueryResult checkRandomHexStringQuery(final String originalQuery,
-                                                  final String normalisedQuery) {
+    /**
+     * Generate a random string of a given length from a set of
+     * characters.
+     */
+    private String generateRandomString(final String characters,
+                                        final int length) {
+        StringBuffer buffer = new StringBuffer();
+        
+        for (int i = 0; i < length; i++) {
+            final int number = random.nextInt(characters.length());
+            buffer.append(characters.charAt(number));
+        }
+
+        return buffer.toString();
+    }
+
+    private QueryResult tryRandomHexStringQuery(final String originalQuery,
+                                                final String normalisedQuery) {
         if (!normalisedQuery.equals("random key") &&
             !normalisedQuery.equals("random hex") &&
             !normalisedQuery.equals("random hash") &&
@@ -44,29 +59,81 @@ public class RandomNumberGeneratorQuery implements Query
             return null;
         }
 
-        // @todo There are better ways of doing this!
         final String HEX_CHARACTERS = "0123456789ABCDEF";
-        StringBuffer randomHex = new StringBuffer();
+        final int BIT_COUNTS[] = {64, 128, 192, 256};
+        final int BITS_PER_CHAR = 4;
 
-        // 256 bits
-        for (int i = 0; i < 64; i++) {
-            int number = random.nextInt(HEX_CHARACTERS.length());
-            randomHex.append(HEX_CHARACTERS.charAt(number));
+        // Maximum 256-bits.
+        final String randomHex = generateRandomString(HEX_CHARACTERS, 64);
+
+        TableQueryResult result = new TableQueryResult(originalQuery);
+
+        for (final int bitCount : BIT_COUNTS) {
+            result.addRow
+                (new TableQueryResult.Cell(Long.toString(bitCount) + " bits"),
+                 new TableQueryResult.Cell(randomHex.substring
+                          (0, bitCount / BITS_PER_CHAR),
+                          true));
         }
+
+        return result;
+    }
+
+    private QueryResult tryRandomPasswordQuery(final String originalQuery,
+                                               final String normalisedQuery) {
+        if (!normalisedQuery.equals("random password") &&
+            !normalisedQuery.equals("password random")) { return null; }
+
+        TableQueryResult result = new TableQueryResult(originalQuery);
+
+        final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";        
+        final int PASSWORD_LENGTHS[] = {12, 16, 24};
         
-        return new SingleQueryResult(originalQuery, randomHex.toString());
+        final int maximumPasswordLength =
+            PASSWORD_LENGTHS[PASSWORD_LENGTHS.length - 1];
         
+        final String alphaCharacters = ALPHABET + ALPHABET.toUpperCase();
+        final String randomAlphaString =
+            generateRandomString(alphaCharacters, maximumPasswordLength);
+        
+        final String alphaNumericCharacters = alphaCharacters + "0123456789";
+        final String randomAlphaNumericString =
+            generateRandomString(alphaNumericCharacters, maximumPasswordLength);
+        
+        // Avoid these characters that might cause issues: << ()"\:>>.
+        final String alphaNumericSymbolCharacters =
+            alphaNumericCharacters + "!@#$%^&*-_=+;',<.>?/|`~";
+        final String randomAlphaNumericSymbolString =
+            generateRandomString(alphaNumericSymbolCharacters,
+                                 maximumPasswordLength);
+        
+        for (final int passwordLength : PASSWORD_LENGTHS) {
+            final String passwords =
+                randomAlphaString.substring(0, passwordLength) + "\n" +
+                randomAlphaNumericString.substring(0, passwordLength) + "\n" +
+                randomAlphaNumericSymbolString.substring(0, passwordLength);
+            
+            result.addRow
+                (new TableQueryResult.Cell(Long.toString(passwordLength) +
+                                           " characters"),
+                 new TableQueryResult.Cell(passwords, true));
+        }
+
+        return result;
     }
     
     public @Override QueryResult getResult(final Context context,
                                            final String query) {
         final String normalisedQuery = query.toLowerCase();
         
-        QueryResult result = checkRandomUuidQuery(query, normalisedQuery);
+        QueryResult result = tryRandomUuidQuery(query, normalisedQuery);
         if (result == null) {
-            result = checkRandomHexStringQuery(query, normalisedQuery);
+            result = tryRandomHexStringQuery(query, normalisedQuery);
         }
-
+        if (result == null) {
+            result = tryRandomPasswordQuery(query, normalisedQuery);
+        }
+        
         return result;
     }
 }

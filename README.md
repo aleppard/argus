@@ -73,6 +73,7 @@ Argus supports generating a limited set of random numbers:
 | example query | result |
 | --- | --- |
 | random hex | 946B2D46764836F904A0B4B842571469C83F6AF2AF619CAC0973B989A34C0C9C | 
+| random password | 4n$Kg4l1@M$C |
 | random uuid | 3c68645a-ed8b-4b28-81cc-8faa0bbb5bbe |
 
 ### Base64 & JWT Decoding
@@ -189,10 +190,10 @@ Future improvements could include:
     2H2O + 2Li -> LiOH (aq) + H2(g) + heat).
 * More random number/string generation:
   * Integers (e.g. "random int", "randon long").
-  * Specify number of bits.
   * Specify UUID version.
-  * Generate random passwords and passphrases.
-  * Add entropy on client-side to improve secret generation.
+  * Generate random passphrases.
+  * Generate randon numbers in specified range, eg. "random [0, 12)".
+  * Add entropy on client-side to improve security.
 * Detect and decode encoded data without context, including:
   * Unicode code point
   * Basic ciphers (e.g. Caeser, Vignere, etc)
