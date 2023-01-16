@@ -12,6 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import freemarker.template.Template;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 /**
  * Representation of a single value query result.
  */
@@ -56,12 +58,15 @@ public class SingleQueryResult implements QueryResult {
         
         arguments.put("query", query);
 
+        final String escapedResult =
+            StringEscapeUtils.escapeXml(result);
+        
         // @todo We should not include HTML code here.
         if (fixedWidth) {
-            arguments.put("result", "<pre>" + result + "</pre>");
+            arguments.put("result", "<pre>" + escapedResult + "</pre>");
         }
         else {
-            arguments.put("result", result);
+            arguments.put("result", escapedResult);
         }
         
         try {

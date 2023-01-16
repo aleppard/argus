@@ -17,6 +17,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import freemarker.template.Template;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 /**
  * Representation of a query result that consists of a table of
  * results.
@@ -41,12 +43,16 @@ public class TableQueryResult implements QueryResult {
 
         public Map<String, Object> toMap() {
             Map<String, Object> map = new HashMap<>();
+
+            final String escapedText =
+                StringEscapeUtils.escapeXml(text);
+            
             // @todo We should not include HTML code here.
             if (fixedWidth) {
-                map.put("text", "<pre>" + text + "</pre>");
+                map.put("text", "<pre>" + escapedText + "</pre>");
             }
             else {
-                map.put("text", text);
+                map.put("text", escapedText);
             }
 
             return map;
