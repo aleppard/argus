@@ -1,5 +1,9 @@
 package com.argus;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import java.util.logging.Logger;
 
 import java.util.regex.Matcher;
@@ -40,6 +44,19 @@ public class MathQuery implements Query
         // @todo Why doesn't this work?
         // EvalEngine.get().setNumericMode(true);
     }
+
+    /**
+     * Normalise the input to the math query engine or the output so
+     * that we can spot useless transformations like this:
+     * "times are tough!" -> "are*Times*tough!".
+     */
+    public static String normalise(String string, final String separator) {
+        string = string.toLowerCase().trim();
+        List<String> keywords = Arrays.asList(string.split(separator));
+        // @todo Change, e.g. "5000.00" to "5000".
+        Collections.sort(keywords);
+        return String.join("*", keywords);
+    }
     
     public @Override QueryResult getResult(final Context contet,
                                            final String query) {
@@ -47,7 +64,9 @@ public class MathQuery implements Query
         // Ignore any query that doesn't contain symbols (i.e. not
         // letters or numbers). We need to do this otherwise text like
         // "post code 5000" would return "5000.0*code*post" whichi
-        // is nonsense.
+        // is nonsense. Note that the normalise() check performed
+        // below will ignore that result if the @todo in that function
+        // is addressed.
         
         // This rules out queries like "sin 30" but that's okay because
         // that requires preprocessing too before the library returns
@@ -65,9 +84,19 @@ public class MathQuery implements Query
             final String resultString = result.toString();
 
             // Ignore result if it's the same as the input.
-            if (!resultString.equalsIgnoreCase(query)) {
-                return new SingleQueryResult(query, result.toString());
+            if (resultString.equalsIgnoreCase(query)) {
+                return null;
             }
+            
+            // If all the query has done is rearrange the words and add
+            // asterixes, e.g.
+            // "times are tough!" -> "are*Times*tough!" then we can ignore it.
+            if (normalise(query, " ")
+                .equals(normalise(resultString, "\\*"))) {
+                return null;
+            }
+            
+            return new SingleQueryResult(query, result.toString());
         }
         catch (Exception exception) {
         }
