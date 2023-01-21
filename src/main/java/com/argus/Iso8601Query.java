@@ -1,8 +1,6 @@
 package com.argus;
 
 import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
-import java.time.ZoneId;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -16,6 +14,7 @@ import java.time.format.FormatStyle;
  * @see https://en.wikipedia.org/wiki/ISO_8601
  * @todo Handle decoding more ISO 8601 date/times/periods e.g.
  * R5/2008-03-01T13:00:00Z/P1Y2M10DT2H30M
+ * @todo This should work even if the time stap does not have a trailing Z.
  */
 public class Iso8601Query implements Query
 {
@@ -50,17 +49,6 @@ public class Iso8601Query implements Query
 
         if (dateTime == null) return null;
 
-        final ZoneId zoneId =
-            context.getZoneId() != null? context.getZoneId() :
-            ZoneId.systemDefault();
-        final ZonedDateTime zonedDateTime =
-            dateTime.atZoneSameInstant(zoneId);
-        final DateTimeFormatter outputFormatter =
-            DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL,
-                                                  FormatStyle.FULL);
-
-        // @todo Return a title and link to Wikipedia.
-        return new SingleQueryResult(query,
-                                     outputFormatter.format(zonedDateTime));
+        return CurrentTimeQuery.toResult(context, query, dateTime);
     }
 }

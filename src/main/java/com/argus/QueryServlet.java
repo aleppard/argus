@@ -25,6 +25,7 @@ public class QueryServlet extends HttpServlet
     private Query[] queries =
         new Query[]{new BangQuery(),
                     new ColourQuery(),
+                    new CurrentTimeQuery(),
                     new Iso8601Query(),
                     new RandomNumberGeneratorQuery(),
                     new JwtDecoderQuery(),

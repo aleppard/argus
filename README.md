@@ -31,7 +31,7 @@ Argus supports a subset of [DuckDuckGo's bang commands](https://duckduckgo.com/b
 
 Would search for Wuthering Heights directly on Amazon's website removing the need to visit DuckDuckGo which would then re-direct to Amazon.
 
-Other supported bang commands are:
+Other supported bang commands include:
 
 | bang command | action |
 | --- | --- |
@@ -53,6 +53,8 @@ Queries can be prefixed with "@" for Firefox style at queries, e.g.
 
     @amazon Wuthering heights
 
+See [the full list of supported commands](src/main/resources/bangs.yaml).
+
 ### Math Engine
 
 Argus has an [integrated math engine](https://bitbucket.org/axelclk/symja_android_library/src/master/).
@@ -60,11 +62,6 @@ Argus has an [integrated math engine](https://bitbucket.org/axelclk/symja_androi
 | example query | result |
 | --- | --- |
 | sin(30°) | 0.5 |
-
-### ISO 8601 / UTC Dates
-
-Argus supports converting dates in the ISO 8601 / UTC format
-(e.g. 2022-12-24T01:08:48Z) to the local time.
 
 ### Random Number Generation
 
@@ -101,6 +98,17 @@ Argus supports matching words based on a pattern.
 | example query | result |
 | --- | --- |
 | h?ve | have, hive, hove | 
+
+### Time
+
+Argus supports returning the local time in human readable format, ISO
+8601 format and Unix epoch. It can also convert an ISO 8601 formatted
+date to the local time and to Unix epoch.
+
+| example query | result |
+| --- | --- |
+| current time | Various formats for current time | 
+| 2020-01-01T12:00:00Z | Various format for time |
 
 ## How to Run
 
@@ -146,7 +154,7 @@ Future improvements could include:
 * Custom bang commands.
 * Support more bang commands.
 * Improved math support.
-  * Better support for internal math library (e.g. expose symbolic functionality).
+  * Better support for integrated math library (e.g. expose symbolic functionality).
   * A REPL style console to perform multiple math operations.
   * Display equations in MathML.
   * Plot equations.
@@ -167,7 +175,8 @@ Future improvements could include:
 * An integrated thesaurus to handle synonyms, antonyms etc.
 * Ability to translate words and phrases.
 * Time conversion to other time zones including finding the day of the
-  week that a date falls on, and finding the number of days until a given date.
+  week that a date falls on, and finding the number of days until a
+  given date, and converting from a Unix Epoch.
 * A "local only" search mode.
 * Cache recent queries and provide a "private" search mode to disable caching.
 * Direct links to websites or calls to external APIs for weather, currency conversion, crypto & stock quotes etc.
