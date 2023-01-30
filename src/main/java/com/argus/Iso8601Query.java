@@ -6,6 +6,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.FormatStyle;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Query that handles decoding ISO 8601 dates and times into a human
  * readable date and times in the user's local time zone, e.g.
@@ -18,11 +21,13 @@ import java.time.format.FormatStyle;
  */
 public class Iso8601Query implements Query
 {
-    private DateTimeFormatter inputDateFormatter;
+    private List<DateTimeFormatter> dateFormatters =
+        new ArrayList<>();
     
     public Iso8601Query() {
-        this.inputDateFormatter = 
-            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        // @todo Add more.
+        dateFormatters.add
+            (DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"));
     }
     
     public @Override QueryResult getResult(final Context context,
@@ -30,12 +35,15 @@ public class Iso8601Query implements Query
         OffsetDateTime dateTime = null;
 
         // @todo Run quick check to test if this could be a date.
-        
-        // Parse yyyy-MM-dd'T'HH:mm:ss.SSSXXX.
-        try {
-            dateTime = OffsetDateTime.parse(query, this.inputDateFormatter);
-        }
-        catch (DateTimeParseException exception) {
+
+        // Try different date time formats.
+        for (final DateTimeFormatter dateFormatter: dateFormatters) {
+            try {
+                dateTime = OffsetDateTime.parse(query, dateFormatter);
+                break;
+            }
+            catch (DateTimeParseException exception) {
+            }
         }
 
         // Parse yyyy-MM-dd'T'HH:mm:ssXXX.
