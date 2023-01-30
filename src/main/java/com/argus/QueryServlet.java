@@ -20,21 +20,7 @@ public class QueryServlet extends HttpServlet
     private static final Logger LOGGER =
         Logger.getLogger(QueryServlet.class.getName());
 
-    // @todo Cache these between requests.
-    // @todo Come up with a more pluggable query mechanism.
-    private Query[] queries =
-        new Query[]{new BangQuery(),
-                    new ColourQuery(),
-                    new CurrentTimeQuery(),
-                    new Iso8601Query(),
-                    new RandomNumberGeneratorQuery(),
-                    new JwtDecoderQuery(),
-                    new Base64DecoderQuery(),
-                    new WordPatternQuery(),
-                    new MathQuery()};
-
-    public QueryServlet() {
-    }
+    private QueryEngine queryEngine = new QueryEngine();
     
     @Override public void doGet(HttpServletRequest request,
                                 HttpServletResponse response)
@@ -43,20 +29,7 @@ public class QueryServlet extends HttpServlet
         // @todo Should we also collapse double spaces here?
         final String queryParameter = request.getParameter("q").trim();
         final Context context = new Context(request.getParameter("time_zone"));
-        
-        // @todo Consider trying all queries, not just until we get the
-        // first match, as there may be multiple results. We might also want
-        // to include a "confidence" value so that we can ignore or deprioritise
-        // low value confidence results if another result has a higher
-        // confidence.
-        // @todo Run queries concurrently.
-        QueryResult result = null;
-        for (final Query query : queries) {
-            result = query.getResult(context, queryParameter);
-            if (result != null) {
-                break;
-            }
-        }
+        QueryResult result = queryEngine.runQuery(context, queryParameter);
 
         // If we couldn't process the query locally then redirect
         // to DuckDuckGo.
@@ -71,6 +44,7 @@ public class QueryServlet extends HttpServlet
     }
 
     @Override public void destroy() {
-        queries = null;
+        queryEngine.close();
+        queryEngine = null;
     }
 }
