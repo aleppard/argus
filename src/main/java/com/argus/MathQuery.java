@@ -24,13 +24,11 @@ import org.matheclipse.core.interfaces.IExpr;
  * integration etc which the underlying library supports. Then return the 
  * results using MathML to display properly in the browser.
  */
-public class MathQuery implements Query
+public class MathQuery implements AutoCloseable, Query
 {
     private static final Logger LOGGER =
         Logger.getLogger(MathQuery.class.getName());
     
-    // @todo Remove this memory leak on shutdown.
-    // 3-Jan-2023 23:49:17.248 SEVERE [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks The web application [ROOT] created a ThreadLocal with key of type [java.lang.ThreadLocal.SuppliedThreadLocal] (value [java.lang.ThreadLocal$SuppliedThreadLocal@27b74311]) and a value of type [org.matheclipse.core.eval.EvalEngine] (value [org.matheclipse.core.eval.EvalEngine@23bfc29c]) but failed to remove it when the web application was stopped. Threads are going to be renewed over time to try and avoid a probable memory leak.
     private ExprEvaluator expressionEvaluator =
         new ExprEvaluator(false, (short)1);
 
@@ -102,5 +100,9 @@ public class MathQuery implements Query
         }
 
         return null;
+    }
+
+    @Override public void close() {
+        // 3-Jan-2023 23:49:17.248 SEVERE [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks The web application [ROOT] created a ThreadLocal with key of type [java.lang.ThreadLocal.SuppliedThreadLocal] (value [java.lang.ThreadLocal$SuppliedThreadLocal@27b74311]) and a value of type [org.matheclipse.core.eval.EvalEngine] (value [org.matheclipse.core.eval.EvalEngine@23bfc29c]) but failed to remove it when the web application was stopped. Threads are going to be renewed over time to try and avoid a probable memory leak.
     }
 }
