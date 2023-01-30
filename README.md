@@ -103,12 +103,13 @@ Argus supports matching words based on a pattern.
 
 Argus supports returning the local time in human readable format, ISO
 8601 format and Unix epoch. It can also convert an ISO 8601 formatted
-date to the local time and to Unix epoch.
+date to the local time and to Unix epoch and back-again.
 
 | example query | result |
 | --- | --- |
 | current time | Various formats for current time | 
-| 2020-01-01T12:00:00Z | Various format for time |
+| 2020-01-01T12:00:00Z | Various format for the time |
+| 1675050793 epoch | Various formats for the time |
 
 ## How to Run
 
@@ -176,7 +177,7 @@ Future improvements could include:
 * Ability to translate words and phrases.
 * Time conversion to other time zones including finding the day of the
   week that a date falls on, and finding the number of days until a
-  given date, and converting from a Unix Epoch.
+  given date.
 * A "local only" search mode.
 * Cache recent queries and provide a "private" search mode to disable caching.
 * Direct links to websites or calls to external APIs for weather, currency conversion, crypto & stock quotes etc.

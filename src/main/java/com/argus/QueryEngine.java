@@ -9,6 +9,7 @@ public class QueryEngine implements AutoCloseable {
         new Query[]{new BangQuery(),
                     new ColourQuery(),
                     new CurrentTimeQuery(),
+                    new UnixEpochQuery(),
                     new Iso8601Query(),
                     new RandomNumberGeneratorQuery(),
                     new JwtDecoderQuery(),
@@ -37,5 +38,6 @@ public class QueryEngine implements AutoCloseable {
     }
 
     @Override public void close() {
+        // @todo Hook this up to MathQuery.
     }
 }
