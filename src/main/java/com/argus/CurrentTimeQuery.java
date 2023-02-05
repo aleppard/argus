@@ -9,6 +9,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.FormatStyle;
 
+import java.time.temporal.ChronoField;
+
 /**
  * Returns the current time in a variety of formats.
  *
@@ -53,11 +55,17 @@ public class CurrentTimeQuery implements Query
                                                   FormatStyle.FULL);
         final String localTimeString = outputFormatter.format(zonedDateTime);
         final String iso8601String =
-            DateTimeFormatter.ISO_LOCAL_DATE_TIME.format
+            DateTimeFormatter.ISO_INSTANT.format
             (dateTime.atZoneSameInstant(ZoneOffset.UTC)).toString();
         
         // Number of seconds since 1970-01-01T00:00:00Z.
-        final String unixEpochString = Long.toString(dateTime.toEpochSecond());
+        final String unixEpochSeconds = Long.toString(dateTime.toEpochSecond());
+
+        // Number of milliseconds since 1970-01-01T00:00:00Z.
+        final String unixEpochMilliseconds =
+            Long.toString
+            (dateTime.toEpochSecond() * 1000 +
+             dateTime.get(ChronoField.MILLI_OF_SECOND));
         
         // @todo Return a title and link to Wikipedia.
 
@@ -66,8 +74,12 @@ public class CurrentTimeQuery implements Query
                       new TableQueryResult.Cell(localTimeString));
         result.addRow(new TableQueryResult.Cell("ISO 8601 UTC"),
                       new TableQueryResult.Cell(iso8601String, true));
-        result.addRow(new TableQueryResult.Cell("Unix Epoch"),
-                      new TableQueryResult.Cell(unixEpochString, true));
+        result.addRow(new TableQueryResult.Cell("Seconds since Unix epoch"),
+                      new TableQueryResult.Cell(unixEpochSeconds, true));
+        result.addRow
+            (new TableQueryResult.Cell("Milliseconds since Unix epoch"),
+             new TableQueryResult.Cell(unixEpochMilliseconds,
+                                       true));        
         return result;
 
     }

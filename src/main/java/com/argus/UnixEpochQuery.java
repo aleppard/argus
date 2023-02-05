@@ -7,10 +7,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import java.time.temporal.ChronoField;
+
 /**
  * Query that converts Unix epoch times to date and time strings. Unix
- * epoch times are the number of seconds since
- * 1970-01-01T00:00:00Z.
+ * epoch times are the number of seconds since epoch
+ * (1970-01-01T00:00:00Z).
+ *
+ * Also supported is the number of milliseconds since epoch which is
+ * used by some time systems.
  */
 public class UnixEpochQuery implements Query
 {
@@ -43,10 +48,22 @@ public class UnixEpochQuery implements Query
             final long unixEpoch = Long.parseLong(number);
             if (unixEpoch < 0) { return null; }
 
-            final Instant instant = Instant.ofEpochSecond(unixEpoch);
-            return CurrentTimeQuery.toResult(context,
-                                             query,
-                                             instant.atOffset(ZoneOffset.UTC));
+            Instant instant = Instant.ofEpochSecond(unixEpoch);
+            if (instant.atOffset(ZoneOffset.UTC)
+                .getLong(ChronoField.YEAR) > 2500) {
+                // If the year is above, say, 2500 then it's probably
+                // the number of milliseconds since epoch not seconds.
+                
+                // @todo This heuristic is not perfect. Perhaps
+                // we should also support "xxxxx milliseconds" and
+                // "xxxxx seconds" to get around this heuristic. 
+                instant = Instant.ofEpochMilli(unixEpoch);
+            }
+                
+            return CurrentTimeQuery.toResult
+                (context,
+                 query,
+                 instant.atOffset(ZoneOffset.UTC));
         }
         catch (NumberFormatException exception) {
             return null;
