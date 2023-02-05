@@ -82,6 +82,10 @@ Web Tokens):
 | --- | --- |
 | dXNlcjpwYXNzd29yZAo= | user:password |
 | ey...J9.ey...fQ.Sf...5c | Header { "typ: "JWT", ... } |
+| ! safasfsd | No results found. |
+
+Passing "! " before the query will stop the query being forwarded to
+an external web browser if the token couldn't be decoded.
 
 ### Colour Decoding
 
@@ -178,7 +182,6 @@ Future improvements could include:
 * Time conversion to other time zones including finding the day of the
   week that a date falls on, and finding the number of days until a
   given date.
-* A "local only" search mode.
 * Cache recent queries and provide a "private" search mode to disable caching.
 * Direct links to websites or calls to external APIs for weather, currency conversion, crypto & stock quotes etc.
 * Ability to search local databases / uploaded spreadsheets / uploaded
@@ -206,6 +209,7 @@ Future improvements could include:
   * Add entropy on client-side to improve security.
 * Detect and decode encoded data without context, including:
   * Unicode code point
+  * Unix epoch
   * Basic ciphers (e.g. Caeser, Vignere, etc)
   * Any number and return as much data about that number (e.g. is it
     prime, factors, atomic element with given number if any, etc).
@@ -213,6 +217,11 @@ Future improvements could include:
   * Post/zip codes
   * Abbreviations + acronyms including country codes, file extensions,
     etc.
+* Sounds:
+  * Identify wavelength/frequency. 
+  * Convert wavelength to/from frequency.  
+  * Generate sound from frequency (Hz), from note (e.g. "middle-c") or
+    from chord name.
 
 ## Building From Source
 
