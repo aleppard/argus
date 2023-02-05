@@ -5,6 +5,7 @@ brave: https://search.brave.com/search?q=
 ddg: https://duckduckgo.com/?q=
 g, google: https://google.com/search?q=
 gh, git, github: https://github.com/search?q=
+mdn: https://developer.mozilla.org/search?q=
 mvn, mvnrep: https://mvnrepository.com/search?q=
 npm, npmjs: https://www.npmjs.com/search?q=
 so: https://stackoverflow.com/search?q=
