@@ -25,19 +25,36 @@ public class QueryServlet extends HttpServlet
     @Override public void doGet(HttpServletRequest request,
                                 HttpServletResponse response)
         throws IOException {
+
+        boolean isLocalQueryOnly = false;
         
         // @todo Should we also collapse double spaces here?
         final String queryParameter = request.getParameter("q").trim();
+        String query = queryParameter;
+        
+        // Queries prefixed with "! " are only run locally and are not
+        // passed on to an external search engine.
+        if (query.startsWith("! ")) {
+            query = query.substring(1).trim();
+            isLocalQueryOnly = true;
+        }
+        
         final Context context = new Context(request.getParameter("time_zone"));
-        QueryResult result = queryEngine.runQuery(context, queryParameter);
+        QueryResult result = queryEngine.runQuery(context, query);
 
         // If we couldn't process the query locally then redirect
-        // to DuckDuckGo.
+        // to DuckDuckGo if the query isn't local only.
         if (result == null) {
-            // @todo This should be configurable.
-            result = new RedirectionQueryResult
-                ("https://duckduckgo.com/?q=" +
-                 URLEncoder.encode(queryParameter, "UTF-8"));
+            if (isLocalQueryOnly) {
+                result = new EmptyQueryResult(query);
+            }
+            else {
+                // @todo This should be configurable.
+                final String url = 
+                    ("https://duckduckgo.com/?q=" +
+                     URLEncoder.encode(queryParameter, "UTF-8"));
+                result = new RedirectionQueryResult(url);
+            }
         }
             
         result.setResponse(response);
