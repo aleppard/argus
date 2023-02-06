@@ -15,9 +15,7 @@
 <#macro style>
 html, body {
   min-height: 100%;
-  overflow: hidden;
   width: 100%;
-  position: fixed;
   margin: 0 !important;
   padding: 0 !important;
 }
