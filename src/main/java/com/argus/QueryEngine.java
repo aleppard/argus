@@ -7,6 +7,7 @@ public class QueryEngine implements AutoCloseable {
     // @todo Come up with a more pluggable query mechanism.
     private Query[] queries =
         new Query[]{new BangQuery(),
+                    new CharacterQuery(),
                     new ColourQuery(),
                     new CurrentTimeQuery(),
                     new UnixEpochQuery(),

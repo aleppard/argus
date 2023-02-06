@@ -77,6 +77,13 @@ public class TableQueryResult implements QueryResult {
                   .collect(Collectors.toList()));
     }
 
+    public void addRow(final String... cells) {
+        table.add(Arrays.asList(cells)
+                  .stream()
+                  .map(cell -> new Cell(cell).toMap())
+                  .collect(Collectors.toList()));
+    }
+    
     @Override public void setResponse(HttpServletResponse response)
         throws IOException {
 

@@ -95,6 +95,16 @@ Argus supports decoding an encoded colour string and displaying that colour.
 | --- | --- |
 | #FF0000 | Background colour changes to red |
 
+### Character information
+
+Argus supports taking a single character (ASCII or Unicode) and
+returning information (e.g. Unicode code point) for that character.
+
+| example query | result |
+| --- | --- |
+| ✔ | Information about HEAVY CHECK MARK |
+| a | Information about letter a |
+
 ### Word Pattern Matching
 
 Argus supports matching words based on a pattern.
