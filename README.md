@@ -15,7 +15,8 @@ directly:
 
 * Enhanced privacy.
 * Increased performance for queries that can be performed locally.
-* Reduced reliance on network access. Locally performed queries do not require network access.
+* Reduced reliance on network access. Locally performed queries do not
+  require network access.
 
 ![Screenshot!](/screenshot.jpg)
 
@@ -99,11 +100,14 @@ Argus supports decoding an encoded colour string and displaying that colour.
 
 Argus supports taking a single character (ASCII or Unicode) and
 returning information (e.g. Unicode code point) for that character.
+It also supports searching the unicode characters for specific
+characters based on their name.
 
 | example query | result |
 | --- | --- |
 | ✔ | Information about HEAVY CHECK MARK |
 | a | Information about letter a |
+| unicode greek | List all Greek unicode characters |
 
 ### Word Pattern Matching
 

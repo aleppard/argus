@@ -16,7 +16,8 @@ public class QueryEngine implements AutoCloseable {
                     new JwtDecoderQuery(),
                     new Base64DecoderQuery(),
                     new WordPatternQuery(),
-                    new MathQuery()};
+                    new MathQuery(),
+                    new UnicodeQuery()};
 
     public QueryResult runQuery(final Context context,
                                 final String queryString) {

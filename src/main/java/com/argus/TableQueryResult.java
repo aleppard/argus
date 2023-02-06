@@ -31,6 +31,7 @@ public class TableQueryResult implements QueryResult {
     public static class Cell {
         private String text;
         private boolean fixedWidth = false;
+        private boolean escape = true;
 
         public Cell(final String text) {
             this.text = text;
@@ -39,13 +40,21 @@ public class TableQueryResult implements QueryResult {
         public Cell(final String text, boolean fixedWidth) {
             this.text = text;
             this.fixedWidth = fixedWidth;
-        }        
+        }
+
+        // @todo Remove these values from the constructor and add set
+        // methods.
+        public Cell(final String text, boolean fixedWidth, boolean escape) {
+            this.text = text;
+            this.fixedWidth = fixedWidth;
+            this.escape = escape;
+        }                
 
         public Map<String, Object> toMap() {
             Map<String, Object> map = new HashMap<>();
 
             final String escapedText =
-                StringEscapeUtils.escapeXml(text);
+                escape? StringEscapeUtils.escapeXml(text) : text;
             
             // @todo We should not include HTML code here.
             if (fixedWidth) {
@@ -82,6 +91,10 @@ public class TableQueryResult implements QueryResult {
                   .stream()
                   .map(cell -> new Cell(cell).toMap())
                   .collect(Collectors.toList()));
+    }
+
+    public int getRowCount() {
+        return table.size();
     }
     
     @Override public void setResponse(HttpServletResponse response)
