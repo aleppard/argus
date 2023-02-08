@@ -1,9 +1,5 @@
 package com.argus;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import java.util.logging.Logger;
 
 import java.util.regex.Matcher;
@@ -23,6 +19,8 @@ import org.matheclipse.core.interfaces.IExpr;
  * @todo Support symbolic processing, e.g. queries about differentiation,
  * integration etc which the underlying library supports. Then return the 
  * results using MathML to display properly in the browser.
+ * @todo Increase precision of returned numbers.
+ * @todo Can we output numbers with an exponent instead of "^"?
  */
 public class MathQuery implements AutoCloseable, Query
 {
@@ -34,43 +32,33 @@ public class MathQuery implements AutoCloseable, Query
 
     // Make sure the query contains a mathematical symbol even if it's
     // just a parenthesis.
-    private Pattern notLetterOrNumberOrBasicPunctuation =
+    private Pattern notLetterOrNumberOrBasicPunctuationPattern =
         Pattern.compile("[^0-9a-zA-Z ,\\.\\?]");
 
+    // Matches numbers returned from the math query library, e.g.
+    // 5.0
+    // 1.*10^-9 (???)
+    // 3.6288*10^6
+    // -3.6288*10^6
+    private Pattern numberPattern =
+        Pattern.compile("-?[0-9]+\\.[0-9]*(\\*[0-9]+\\^-?[0-9]+)?");
+    
     public MathQuery() {
         // Return numeric results not just symbolic results.
         // @todo Why doesn't this work?
         // EvalEngine.get().setNumericMode(true);
     }
 
-    /**
-     * Normalise the input to the math query engine or the output so
-     * that we can spot useless transformations like this:
-     * "times are tough!" -> "are*Times*tough!".
-     */
-    public static String normalise(String string, final String separator) {
-        string = string.toLowerCase().trim();
-        List<String> keywords = Arrays.asList(string.split(separator));
-        // @todo Change, e.g. "5000.00" to "5000".
-        Collections.sort(keywords);
-        return String.join("*", keywords);
-    }
-    
     public @Override QueryResult getResult(final Context contet,
                                            final String query) {
 
         // Ignore any query that doesn't contain symbols (i.e. not
-        // letters or numbers). We need to do this otherwise text like
-        // "post code 5000" would return "5000.0*code*post" whichi
-        // is nonsense. Note that the normalise() check performed
-        // below will ignore that result if the @todo in that function
-        // is addressed.
-        
-        // This rules out queries like "sin 30" but that's okay because
-        // that requires preprocessing too before the library returns
-        // the correct answer.
-        // @todo This is probably not strict enough.
-        if (!notLetterOrNumberOrBasicPunctuation.matcher(query).find()) {
+        // letters or numbers). We do this because the math library
+        // has a tendency to try its best with non-math queries.
+        // See comment below.
+
+        // @todo Is this check necessary now we have the check below?
+        if (!notLetterOrNumberOrBasicPunctuationPattern.matcher(query).find()) {
             return null;
         }
 
@@ -85,12 +73,14 @@ public class MathQuery implements AutoCloseable, Query
             if (resultString.equalsIgnoreCase(query)) {
                 return null;
             }
-            
-            // If all the query has done is rearrange the words and add
-            // asterixes, e.g.
-            // "times are tough!" -> "are*Times*tough!" then we can ignore it.
-            if (normalise(query, " ")
-                .equals(normalise(resultString, "\\*"))) {
+
+            // The math library has a tendency to try its best with
+            // non-math queries, e.g. 
+            // "times are tough!" might be converted to "are*Times*tough!".
+            // So ignore the result if the output is not a number and is
+            // not smaller than the input.
+            if (!numberPattern.matcher(resultString).matches() &&
+                resultString.length() >= query.length()) {
                 return null;
             }
             
