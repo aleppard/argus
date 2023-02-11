@@ -86,7 +86,7 @@ Web Tokens):
 | ! safasfsd | No results found. |
 
 Passing "! " before the query will stop the query being forwarded to
-an external web browser if the token couldn't be decoded.
+an external web browser if the token couldn't be decoded locally.
 
 ### Colour Decoding
 
@@ -95,6 +95,7 @@ Argus supports decoding an encoded colour string and displaying that colour.
 | example query | result |
 | --- | --- |
 | #FF0000 | Background colour changes to red |
+| rgb(255, 0, 0) | Background colour changes to red |
 
 ### Character information
 
@@ -217,7 +218,7 @@ Future improvements could include:
     2H2O + 2Li -> LiOH (aq) + H2(g) + heat).
 * More random number/string generation:
   * Integers (e.g. "random int", "randon long").
-  * Specify UUID version.
+  * Specify or generate different UUID versions.
   * Generate random passphrases.
   * Generate randon numbers in specified range, eg. "random [0, 12)".
   * Add entropy on client-side to improve security.
@@ -233,9 +234,9 @@ Future improvements could include:
     etc.
 * Sounds:
   * Identify wavelength/frequency. 
-  * Convert wavelength to/from frequency.  
-  * Generate sound from frequency (Hz), from note (e.g. "middle-c") or
-    from chord name.
+  * Convert wavelength to/from frequency.
+  * Generate sound from frequency (Hz), from wavelength, from note 
+    (e.g. "middle-c"), chord name, text or phonetics.
 
 ## Building From Source
 

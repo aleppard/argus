@@ -2,11 +2,16 @@ package com.argus;
 
 import java.io.IOException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import java.util.stream.Collectors;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -22,24 +27,61 @@ public class ColourQueryResult implements QueryResult {
         Logger.getLogger(ColourQueryResult.class.getName());
     
     private String query;
-    private String colour;
+    private int red;
+    private int green;
+    private int blue;
+
+    private List<List<Map<String, Object>>> table = new ArrayList<>();
 
     /**
      * @param query the user's query.
-     * @param colour the colour in the format #RRGGBB in hex.
      */
-    public ColourQueryResult(final String query, final String colour) {
+    public ColourQueryResult(final String query, int red, int green, int blue) {
         this.query = query;
-        this.colour = colour;
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+
+        // @todo Add HTML colour name if it matches.
+        addRow("CSS Hex", "#" +
+               String.format("%02X", red) +
+               String.format("%02X", green) +
+               String.format("%02X", blue));
+        addRow("CSS RGB", "rgb(" + red + ", " + green + ", " + blue + ")"); 
     }
 
-     @Override public void setResponse(HttpServletResponse response)
+    private void addRow(final String... cells) {
+        table.add(Arrays.asList(cells)
+                  .stream()
+                  .map(cell -> new TableQueryResult.Cell(cell).toMap())
+                  .collect(Collectors.toList()));
+    }
+    
+    public int getRed() {
+        return red;
+    }
+
+    public int getGreen() {
+        return green;
+    }
+
+    public int getBlue() {
+        return blue;
+    }
+    
+    @Override public void setResponse(HttpServletResponse response)
         throws IOException {
 
         TemplateEngine templateEngine = new TemplateEngine();
         Map<String, Object> arguments = new HashMap<>();
         arguments.put("query", query);
-        arguments.put("colour", colour);
+        arguments.put("colour",
+                      "rgb(" + red + ", " + green + ", " + blue + ")");
+
+        // @todo Change colour of writing depending on background colour
+        // so that it's always legible.
+        arguments.put("table", table);
+
         try {
             Template template =
                 templateEngine.getTemplate("templates/colour-query-result.html");
