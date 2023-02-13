@@ -1,4 +1,8 @@
-package com.argus;
+package com.argus.resolver;
+
+import com.argus.ColourQueryResult;
+import com.argus.Query;
+import com.argus.QueryResult;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,20 +20,21 @@ import java.util.regex.Pattern;
  * in the b/g which might not be obvious if the colour is similar
  * to the default b/g colour.
  */
-public class ColourQuery implements Query
+public class ColourResolver implements Resolver
 {
     private Pattern hexColourPattern =
         Pattern.compile("#[a-fA-F0-9]{6}+");
     private Pattern rgbPattern =
         Pattern.compile("rgb\\(([0-9]{1,3}),([0-9]{1,3}),([0-9]{1,3})\\)");
     
-    public @Override QueryResult getResult(final Context context,
-                                           final String query) {
+    public @Override QueryResult tryResolve(final Query query) {
+
         try {
-            if (hexColourPattern.matcher(query).matches()) {
-                final int red = Integer.parseInt(query.substring(1, 3), 16);
-                final int green = Integer.parseInt(query.substring(3, 5), 16);
-                final int blue = Integer.parseInt(query.substring(5, 7), 16);
+            final String queryString = query.getRawString();
+            if (hexColourPattern.matcher(queryString).matches()) {
+                final int red = Integer.parseInt(queryString.substring(1, 3), 16);
+                final int green = Integer.parseInt(queryString.substring(3, 5), 16);
+                final int blue = Integer.parseInt(queryString.substring(5, 7), 16);
                 return new ColourQueryResult(query, red, green, blue);
             }
         }
@@ -38,7 +43,7 @@ public class ColourQuery implements Query
 
         // Remove white space characters.
         final String normalisedQuery =
-            query.toLowerCase().replaceAll("\\s", "");
+            query.getNormalisedString().replaceAll("\\s", "");
 
         try {
             final Matcher matcher = rgbPattern.matcher(normalisedQuery);

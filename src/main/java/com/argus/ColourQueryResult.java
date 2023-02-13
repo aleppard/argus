@@ -25,8 +25,8 @@ public class ColourQueryResult implements QueryResult {
 
     private static final Logger LOGGER =
         Logger.getLogger(ColourQueryResult.class.getName());
-    
-    private String query;
+
+    private Query query;
     private int red;
     private int green;
     private int blue;
@@ -36,7 +36,7 @@ public class ColourQueryResult implements QueryResult {
     /**
      * @param query the user's query.
      */
-    public ColourQueryResult(final String query, int red, int green, int blue) {
+    public ColourQueryResult(final Query query, int red, int green, int blue) {
         this.query = query;
         this.red = red;
         this.green = green;
@@ -74,7 +74,7 @@ public class ColourQueryResult implements QueryResult {
 
         TemplateEngine templateEngine = new TemplateEngine();
         Map<String, Object> arguments = new HashMap<>();
-        arguments.put("query", query);
+        arguments.put("query", query.getRawString());
         arguments.put("colour",
                       "rgb(" + red + ", " + green + ", " + blue + ")");
 

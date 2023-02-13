@@ -68,13 +68,13 @@ public class TableQueryResult implements QueryResult {
         }
     }
    
-    private String query;
+    private Query query;
     private List<List<Map<String, Object>>> table = new ArrayList<>();
 
     /**
      * @param query the user's query.
      */
-    public TableQueryResult(final String query) {
+    public TableQueryResult(final Query query) {
         this.query = query;
     }
 
@@ -102,7 +102,7 @@ public class TableQueryResult implements QueryResult {
 
         TemplateEngine templateEngine = new TemplateEngine();
         Map<String, Object> arguments = new HashMap<>();
-        arguments.put("query", query);
+        arguments.put("query", query.getRawString());
         arguments.put("table", table);
 
         try {

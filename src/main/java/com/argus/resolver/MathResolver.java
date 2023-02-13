@@ -1,4 +1,8 @@
-package com.argus;
+package com.argus.resolver;
+
+import com.argus.SingleQueryResult;
+import com.argus.Query;
+import com.argus.QueryResult;
 
 import java.util.logging.Logger;
 
@@ -22,10 +26,10 @@ import org.matheclipse.core.interfaces.IExpr;
  * @todo Increase precision of returned numbers.
  * @todo Can we output numbers with an exponent instead of "^"?
  */
-public class MathQuery implements AutoCloseable, Query
+public class MathResolver implements AutoCloseable, Resolver
 {
     private static final Logger LOGGER =
-        Logger.getLogger(MathQuery.class.getName());
+        Logger.getLogger(MathResolver.class.getName());
     
     private ExprEvaluator expressionEvaluator =
         new ExprEvaluator(false, (short)1);
@@ -43,34 +47,34 @@ public class MathQuery implements AutoCloseable, Query
     private Pattern numberPattern =
         Pattern.compile("-?[0-9]+\\.[0-9]*(\\*[0-9]+\\^-?[0-9]+)?");
     
-    public MathQuery() {
+    public MathResolver() {
         // Return numeric results not just symbolic results.
         // @todo Why doesn't this work?
         // EvalEngine.get().setNumericMode(true);
     }
-
-    public @Override QueryResult getResult(final Context contet,
-                                           final String query) {
-
+    
+    public @Override QueryResult tryResolve(final Query query) {
+        final String queryString = query.getRawString();
+        
         // Ignore any query that doesn't contain symbols (i.e. not
         // letters or numbers). We do this because the math library
         // has a tendency to try its best with non-math queries.
         // See comment below.
 
         // @todo Is this check necessary now we have the check below?
-        if (!notLetterOrNumberOrBasicPunctuationPattern.matcher(query).find()) {
+        if (!notLetterOrNumberOrBasicPunctuationPattern.matcher(queryString).find()) {
             return null;
         }
 
         // Return the numeric result of the query.
-        final String numericQuery = "N(" + query + ")";
+        final String numericQuery = "N(" + queryString + ")";
         
         try {
             final IExpr result = expressionEvaluator.eval(numericQuery);
             final String resultString = result.toString();
 
             // Ignore result if it's the same as the input.
-            if (resultString.equalsIgnoreCase(query)) {
+            if (resultString.equalsIgnoreCase(queryString)) {
                 return null;
             }
 
@@ -80,7 +84,7 @@ public class MathQuery implements AutoCloseable, Query
             // So ignore the result if the output is not a number and is
             // not smaller than the input.
             if (!numberPattern.matcher(resultString).matches() &&
-                resultString.length() >= query.length()) {
+                resultString.length() >= queryString.length()) {
                 return null;
             }
             

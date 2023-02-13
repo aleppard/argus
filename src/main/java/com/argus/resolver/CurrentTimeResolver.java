@@ -1,4 +1,9 @@
-package com.argus;
+package com.argus.resolver;
+
+import com.argus.Context;
+import com.argus.Query;
+import com.argus.QueryResult;
+import com.argus.TableQueryResult;
 
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
@@ -16,11 +21,10 @@ import java.time.temporal.ChronoField;
  *
  * @see https://en.wikipedia.org/wiki/ISO_8601
  */
-public class CurrentTimeQuery implements Query
+public class CurrentTimeResolver implements Resolver
 {
-    public @Override QueryResult getResult(final Context context,
-                                           final String query) {
-        final String normalisedQuery = query.toLowerCase().trim();
+    public @Override QueryResult tryResolve(final Query query) {
+        final String normalisedQuery = query.getNormalisedString();
 
         // This is where a ML model would help.
         if (!normalisedQuery.equals("now") &&
@@ -35,15 +39,15 @@ public class CurrentTimeQuery implements Query
             return null;
         }
 
-        return toResult(context, query, OffsetDateTime.now());
+        return toResult(query, OffsetDateTime.now());
     }
 
     /**
      * Return a date time in a variety of formats.
      */
-    public static QueryResult toResult(final Context context,
-                                       final String query,
+    public static QueryResult toResult(final Query query,
                                        OffsetDateTime dateTime) {
+        final Context context = query.getContext();
         final ZoneId zoneId =
             context.getZoneId() != null? context.getZoneId() :
             ZoneId.systemDefault();

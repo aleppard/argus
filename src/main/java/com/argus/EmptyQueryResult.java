@@ -21,9 +21,9 @@ public class EmptyQueryResult implements QueryResult {
     private static final Logger LOGGER =
         Logger.getLogger(EmptyQueryResult.class.getName());
 
-    private String query;
+    private Query query;
 
-    public EmptyQueryResult(final String query) {
+    public EmptyQueryResult(final Query query) {
         this.query = query;
     }
     
@@ -33,7 +33,7 @@ public class EmptyQueryResult implements QueryResult {
          TemplateEngine templateEngine = new TemplateEngine();
 
          Map<String, Object> arguments = new HashMap<>();
-         arguments.put("query", query);
+         arguments.put("query", query.getRawString());
 
          try {
              Template template =

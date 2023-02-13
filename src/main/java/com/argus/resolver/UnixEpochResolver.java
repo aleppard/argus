@@ -1,4 +1,8 @@
-package com.argus;
+package com.argus.resolver;
+
+import com.argus.Context;
+import com.argus.Query;
+import com.argus.QueryResult;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -17,15 +21,15 @@ import java.time.temporal.ChronoField;
  * Also supported is the number of milliseconds since epoch which is
  * used by some time systems.
  */
-public class UnixEpochQuery implements Query
+public class UnixEpochResolver implements Resolver
 {
-    public @Override QueryResult getResult(final Context context,
-                                           final String query) {
+    public @Override QueryResult tryResolve(final Query query) {
+        final Context context = query.getContext();
         // @todo Move this kind of logic into a new Query class so
         // that it's re-usable.
         // @todo Run trim() on each word here rather than below.
         ArrayList<String> words =
-            new ArrayList(Arrays.asList(query.toLowerCase().split(" ")));
+            new ArrayList(Arrays.asList(query.getNormalisedString().split(" ")));
         Collections.sort(words);
         if (words.size() < 2 || words.size() > 4) return null;
 
@@ -60,9 +64,8 @@ public class UnixEpochQuery implements Query
                 instant = Instant.ofEpochMilli(unixEpoch);
             }
                 
-            return CurrentTimeQuery.toResult
-                (context,
-                 query,
+            return CurrentTimeResolver.toResult
+                (query,
                  instant.atOffset(ZoneOffset.UTC));
         }
         catch (NumberFormatException exception) {

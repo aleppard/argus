@@ -1,4 +1,7 @@
-package com.argus;
+package com.argus.resolver;
+
+import com.argus.Query;
+import com.argus.QueryResult;
 
 import java.time.OffsetDateTime;
 
@@ -19,19 +22,18 @@ import java.util.List;
  * R5/2008-03-01T13:00:00Z/P1Y2M10DT2H30M
  * @todo This should work even if the time stap does not have a trailing Z.
  */
-public class Iso8601Query implements Query
+public class Iso8601Resolver implements Resolver
 {
     private List<DateTimeFormatter> dateFormatters =
         new ArrayList<>();
     
-    public Iso8601Query() {
+    public Iso8601Resolver() {
         // @todo Add more.
         dateFormatters.add
             (DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"));
     }
-    
-    public @Override QueryResult getResult(final Context context,
-                                           final String query) {
+
+    public @Override QueryResult tryResolve(final Query query) {    
         OffsetDateTime dateTime = null;
 
         // @todo Run quick check to test if this could be a date.
@@ -39,7 +41,8 @@ public class Iso8601Query implements Query
         // Try different date time formats.
         for (final DateTimeFormatter dateFormatter: dateFormatters) {
             try {
-                dateTime = OffsetDateTime.parse(query, dateFormatter);
+                dateTime = OffsetDateTime.parse(query.getRawString(),
+                                                dateFormatter);
                 break;
             }
             catch (DateTimeParseException exception) {
@@ -49,7 +52,7 @@ public class Iso8601Query implements Query
         // Parse yyyy-MM-dd'T'HH:mm:ssXXX.
         if (dateTime == null) {
             try {
-                dateTime = OffsetDateTime.parse(query);
+                dateTime = OffsetDateTime.parse(query.getRawString());
             }
             catch (DateTimeParseException exception) {
             }
@@ -57,6 +60,6 @@ public class Iso8601Query implements Query
 
         if (dateTime == null) return null;
 
-        return CurrentTimeQuery.toResult(context, query, dateTime);
+        return CurrentTimeResolver.toResult(query, dateTime);
     }
 }

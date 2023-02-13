@@ -1,4 +1,8 @@
-package com.argus;
+package com.argus.resolver;
+
+import com.argus.Query;
+import com.argus.QueryResult;
+import com.argus.TableQueryResult;
 
 import java.io.StringReader;
 
@@ -22,10 +26,10 @@ import org.json.JSONTokener;
  *
  * eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c 
  */
-public class JwtDecoderQuery implements Query
+public class JwtDecoderResolver implements Resolver
 {
     private static final Logger LOGGER =
-        Logger.getLogger(JwtDecoderQuery.class.getName());
+        Logger.getLogger(JwtDecoderResolver.class.getName());
     
     private Pattern jwtPattern =
         Pattern.compile("([a-zA-Z0-9=_\\-]{8,})\\.([a-zA-Z0-9=_\\-]{8,})\\.[a-zA-Z0-9=_\\-]{8,}");
@@ -39,10 +43,8 @@ public class JwtDecoderQuery implements Query
         return json.toString(2);
     }
     
-    public @Override QueryResult getResult(final Context context,
-                                           final String query) {
-        
-        final Matcher matcher = jwtPattern.matcher(query);
+    public @Override QueryResult tryResolve(final Query query) {
+        final Matcher matcher = jwtPattern.matcher(query.getRawString());
         if (!matcher.matches()) return null;
 
         try {

@@ -1,4 +1,8 @@
-package com.argus;
+package com.argus.resolver;
+
+import com.argus.Query;
+import com.argus.QueryResult;
+import com.argus.TableQueryResult;
 
 /**
  * Returns information about a single character or emoji.
@@ -10,11 +14,11 @@ package com.argus;
  * character.
  * @todo For letters it should say which letter of the alphabet it is.
  */
-public class CharacterQuery implements Query
+public class CharacterResolver implements Resolver
 {
-    public @Override QueryResult getResult(final Context context,
-                                           final String query) {
-        final int codePoints[] = query.codePoints().toArray();
+    public @Override QueryResult tryResolve(final Query query) {
+        final String queryString = query.getNormalisedString();
+        final int codePoints[] = queryString.codePoints().toArray();
         if (codePoints.length != 1) {
             return null;
         }
@@ -25,7 +29,7 @@ public class CharacterQuery implements Query
         // used as the page title.
 
         TableQueryResult result = new TableQueryResult(query);
-        result.addRow("Character", query);
+        result.addRow("Character", queryString);
 
         result.addRow("Name", Character.getName(codePoint));
         Character.UnicodeBlock block = Character.UnicodeBlock.of(codePoint);

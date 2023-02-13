@@ -1,4 +1,8 @@
-package com.argus;
+package com.argus.resolver;
+
+import com.argus.Query;
+import com.argus.QueryResult;
+import com.argus.SingleQueryResult;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -20,7 +24,7 @@ import java.util.regex.Pattern;
  * @todo Generate word list dynamically, e.g. from Wikipedia.
  * @todo Returned words should have links to dictionary definitions.
  */
-public class WordPatternQuery implements Query
+public class WordPatternResolver implements Resolver
 {
     private Boolean loaded = false;
     private List<String> words = null;
@@ -86,17 +90,17 @@ public class WordPatternQuery implements Query
         return true;
     }
     
-    public @Override QueryResult getResult(final Context contet,
-                                           final String query) {
-
+    public @Override QueryResult tryResolve(final Query query) {
+        final String queryString = query.getRawString();
+        
         // Ignore any query that isn't a single word made up of
         // letters and question marks.
-        if (!lettersAndQuestionMarks.matcher(query).matches()) {
+        if (!lettersAndQuestionMarks.matcher(queryString).matches()) {
             return null;
         }
 
         // Ignore any query that doesn't contain a question mark.
-        if (!query.contains("?")) {
+        if (!queryString.contains("?")) {
             return null;
         }
 
@@ -104,7 +108,7 @@ public class WordPatternQuery implements Query
 
         final List<String> matchingWords = new ArrayList<>();
         for (final String word : words) {
-            if (matches(query, word)) {
+            if (matches(queryString, word)) {
                 matchingWords.add(word);
             }
         }

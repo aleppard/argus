@@ -22,7 +22,7 @@ public class SingleQueryResult implements QueryResult {
     private static final Logger LOGGER =
         Logger.getLogger(SingleQueryResult.class.getName());
     
-    private String query;
+    private Query query;
     private String result;
     private boolean fixedWidth = false;
 
@@ -30,7 +30,7 @@ public class SingleQueryResult implements QueryResult {
      * @param query the user's query.
      * @param result the result for that query.
      */
-    public SingleQueryResult(final String query, final String result) {
+    public SingleQueryResult(final Query query, final String result) {
         this.query = query;
         this.result = result;
     }
@@ -39,7 +39,7 @@ public class SingleQueryResult implements QueryResult {
      * @param query the user's query.
      * @param result the result for that query.
      */
-    public SingleQueryResult(final String query, final String result,
+    public SingleQueryResult(final Query query, final String result,
                              boolean fixedWidth) {
         this.query = query;
         this.result = result;
@@ -56,7 +56,7 @@ public class SingleQueryResult implements QueryResult {
         TemplateEngine templateEngine = new TemplateEngine();
         Map<String, Object> arguments = new HashMap<>();
         
-        arguments.put("query", query);
+        arguments.put("query", query.getRawString());
 
         final String escapedResult =
             StringEscapeUtils.escapeXml(result);

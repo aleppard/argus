@@ -1,4 +1,9 @@
-package com.argus;
+package com.argus.resolver;
+
+import com.argus.Query;
+import com.argus.QueryResult;
+import com.argus.SingleQueryResult;
+import com.argus.TableQueryResult;
 
 import java.security.SecureRandom;
 
@@ -16,12 +21,12 @@ import java.util.UUID;
  * secure random number then just generating on the client alone and
  * the server would not have access to a potential secret.
  */
-public class RandomNumberGeneratorQuery implements Query
+public class RandomNumberGeneratorResolver implements Resolver
 {
     private SecureRandom random = new SecureRandom();
     
     // @todo Support different UUID types.
-    private QueryResult tryRandomUuidQuery(final String originalQuery,
+    private QueryResult tryRandomUuidQuery(final Query query,
                                            final String normalisedQuery) {
         // @todo Implement a more robust, flexible and reusable matching
         // scheme.
@@ -29,7 +34,7 @@ public class RandomNumberGeneratorQuery implements Query
             !normalisedQuery.equals("uuid random")) { return null; }
 
         final UUID uuid = UUID.randomUUID();
-        return new SingleQueryResult(originalQuery, uuid.toString());
+        return new SingleQueryResult(query, uuid.toString());
     }
 
     /**
@@ -48,7 +53,7 @@ public class RandomNumberGeneratorQuery implements Query
         return buffer.toString();
     }
 
-    private QueryResult tryRandomHexStringQuery(final String originalQuery,
+    private QueryResult tryRandomHexStringQuery(final Query query,
                                                 final String normalisedQuery) {
         if (!normalisedQuery.equals("random key") &&
             !normalisedQuery.equals("random hex") &&
@@ -66,7 +71,7 @@ public class RandomNumberGeneratorQuery implements Query
         // Maximum 256-bits.
         final String randomHex = generateRandomString(HEX_CHARACTERS, 64);
 
-        TableQueryResult result = new TableQueryResult(originalQuery);
+        TableQueryResult result = new TableQueryResult(query);
 
         for (final int bitCount : BIT_COUNTS) {
             result.addRow
@@ -79,12 +84,12 @@ public class RandomNumberGeneratorQuery implements Query
         return result;
     }
 
-    private QueryResult tryRandomPasswordQuery(final String originalQuery,
+    private QueryResult tryRandomPasswordQuery(final Query query,
                                                final String normalisedQuery) {
         if (!normalisedQuery.equals("random password") &&
             !normalisedQuery.equals("password random")) { return null; }
 
-        TableQueryResult result = new TableQueryResult(originalQuery);
+        TableQueryResult result = new TableQueryResult(query);
 
         final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";        
         final int PASSWORD_LENGTHS[] = {12, 16, 24};
@@ -122,9 +127,8 @@ public class RandomNumberGeneratorQuery implements Query
         return result;
     }
     
-    public @Override QueryResult getResult(final Context context,
-                                           final String query) {
-        final String normalisedQuery = query.toLowerCase();
+    public @Override QueryResult tryResolve(final Query query) {
+        final String normalisedQuery = query.getNormalisedString();
         
         QueryResult result = tryRandomUuidQuery(query, normalisedQuery);
         if (result == null) {

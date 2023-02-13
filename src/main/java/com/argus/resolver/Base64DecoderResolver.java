@@ -1,4 +1,8 @@
-package com.argus;
+package com.argus.resolver;
+
+import com.argus.Query;
+import com.argus.QueryResult;
+import com.argus.SingleQueryResult;
 
 import java.nio.charset.StandardCharsets;
 
@@ -14,7 +18,7 @@ import java.util.regex.Pattern;
  * @todo Support "decode xxxx".
  * @todo Handle binary data.
  */
-public class Base64DecoderQuery implements Query
+public class Base64DecoderResolver implements Resolver
 {
     private Pattern lowerCaseCharacters =
         Pattern.compile("[a-z]");
@@ -31,10 +35,10 @@ public class Base64DecoderQuery implements Query
      * @return the decoded string as a query result or null if
      * unable to decode.
      */
-    private QueryResult tryDecode(Base64.Decoder decoder,
-                                  final String query) {
+    private QueryResult tryDecode(final Query query,
+                                  Base64.Decoder decoder) {
         try {
-            byte[] result = decoder.decode(query);
+            byte[] result = decoder.decode(query.getRawString());
 
             // @todo Try other charsets.
             // @todo Support binary data.
@@ -51,12 +55,13 @@ public class Base64DecoderQuery implements Query
         }
     }
     
-    public @Override QueryResult getResult(final Context context,
-                                           final String query) {
+    public @Override QueryResult tryResolve(final Query query) {
+        final String queryString = query.getRawString();
+        
         // Check the string doesn't contain any characters that aren't
         // base64.
         {
-            final Matcher matcher = nonBase64Characters.matcher(query);
+            final Matcher matcher = nonBase64Characters.matcher(queryString);
             if (matcher.find()) return null;
         }
 
@@ -70,21 +75,21 @@ public class Base64DecoderQuery implements Query
         // skip this check as a base64 string doesn't have to match
         // these rules.
         {
-            if (!query.endsWith("=")) {
-                if (!lowerCaseCharacters.matcher(query).find() ||
-                    !upperCaseCharacters.matcher(query).find() ||
-                    !numbers.matcher(query).find()) {
+            if (!queryString.endsWith("=")) {
+                if (!lowerCaseCharacters.matcher(queryString).find() ||
+                    !upperCaseCharacters.matcher(queryString).find() ||
+                    !numbers.matcher(queryString).find()) {
                     return null;
                 }
             }
         }
         
-        QueryResult result = tryDecode(Base64.getDecoder(), query);
+        QueryResult result = tryDecode(query, Base64.getDecoder());
         if (result == null) {
-            result = tryDecode(Base64.getMimeDecoder(), query);
+            result = tryDecode(query, Base64.getMimeDecoder());
         }
         if (result == null) {
-            result = tryDecode(Base64.getUrlDecoder(), query);
+            result = tryDecode(query, Base64.getUrlDecoder());
         }
 
         return result;

@@ -30,17 +30,18 @@ public class QueryServlet extends HttpServlet
         
         // @todo Should we also collapse double spaces here?
         final String queryParameter = request.getParameter("q").trim();
-        String query = queryParameter;
+        String queryString = queryParameter;
         
         // Queries prefixed with "! " are only run locally and are not
         // passed on to an external search engine.
-        if (query.startsWith("! ")) {
-            query = query.substring(1).trim();
+        if (queryString.startsWith("! ")) {
+            queryString = queryString.substring(1).trim();
             isLocalQueryOnly = true;
         }
-        
+
         final Context context = new Context(request.getParameter("time_zone"));
-        QueryResult result = queryEngine.runQuery(context, query);
+        final Query query = new Query(context, queryString);
+        QueryResult result = queryEngine.tryResolve(query);
 
         // If we couldn't process the query locally then redirect
         // to DuckDuckGo if the query isn't local only.

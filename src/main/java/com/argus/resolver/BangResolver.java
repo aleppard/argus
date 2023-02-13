@@ -1,4 +1,8 @@
-package com.argus;
+package com.argus.resolver;
+
+import com.argus.RedirectionQueryResult;
+import com.argus.Query;
+import com.argus.QueryResult;
 
 import java.net.URLEncoder;
 
@@ -25,11 +29,11 @@ import org.yaml.snakeyaml.Yaml;
  *
  * @see https://duckduckgo.com/bang.
  */
-public class BangQuery implements Query
+public class BangResolver implements Resolver
 {
     private Map<String, String> bangQueries = new HashMap<>();
 
-    public BangQuery() {
+    public BangResolver() {
         Yaml yaml = new Yaml();
         InputStream inputStream = this.getClass()
             .getClassLoader()
@@ -53,18 +57,22 @@ public class BangQuery implements Query
      * (which will be a redirection to the web server that can run
      * the query directly) or null null if it's not a bang style query.
      */
-    public @Override QueryResult getResult(final Context context,
-                                           final String query) {
-        if (!query.startsWith("!") && !query.startsWith("@")) return null;
-        final int firstSpace = query.indexOf(' ');
+    public @Override QueryResult tryResolve(final Query query) {
+        final String queryString = query.getRawString();
+        
+        if (!queryString.startsWith("!") && !queryString.startsWith("@")) {
+            return null;
+        }
+        
+        final int firstSpace = queryString.indexOf(' ');
         if (firstSpace == -1) return null;
         
-        final String prefix = query.substring(1, firstSpace);
+        final String prefix = queryString.substring(1, firstSpace);
         final String url = bangQueries.get(prefix);
         if (url == null) return null;
 
         try {
-            final String postPrefix = query.substring(firstSpace);
+            final String postPrefix = queryString.substring(firstSpace);
             
             return new RedirectionQueryResult
                 (url + URLEncoder.encode(postPrefix,

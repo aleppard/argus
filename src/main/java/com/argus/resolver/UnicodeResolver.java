@@ -1,4 +1,8 @@
-package com.argus;
+package com.argus.resolver;
+
+import com.argus.Query;
+import com.argus.QueryResult;
+import com.argus.TableQueryResult;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,10 +18,10 @@ import java.util.logging.Logger;
  * Should we apply this elsewhere, e.g. "face" matches "surface integral"
  * which is probably not what was wanted.
  */
-public class UnicodeQuery implements Query
+public class UnicodeResolver implements Resolver
 {
     private static final Logger LOGGER =
-        Logger.getLogger(UnicodeQuery.class.getName());
+        Logger.getLogger(UnicodeResolver.class.getName());
 
     private class UnicodeCharacter {
         public int codePoint;
@@ -36,7 +40,7 @@ public class UnicodeQuery implements Query
 
     private int maxCodePoint;
     
-    public UnicodeQuery() {
+    public UnicodeResolver() {
         maxCodePoint = Integer.parseInt(MAX_CODE_POINT, 16);
 
         for (int codePoint = 0; codePoint <= maxCodePoint; codePoint++) {
@@ -46,11 +50,13 @@ public class UnicodeQuery implements Query
         }
     }
     
-    public @Override QueryResult getResult(final Context context,
-                                           final String query) {
+    public @Override QueryResult tryResolve(final Query query) {
+
+        // @todo Move this to Query.
         // @todo Run trim() over all words.
-        List<String> words =
-            new ArrayList<>(Arrays.asList(query.toUpperCase().split(" ")));
+        List<String> words = 
+            new ArrayList<>(Arrays.asList(query.getRawString()
+                                          .toUpperCase().split(" ")));
         if (words.size() < 2) return null;
 
         // Only match queries with the first or last word being unicode.
