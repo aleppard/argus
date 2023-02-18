@@ -74,6 +74,17 @@ Argus supports generating a limited set of random numbers:
 | random password | 4n$Kg4l1@M$C |
 | random uuid | 3c68645a-ed8b-4b28-81cc-8faa0bbb5bbe |
 
+### Conversion between numbers of different bases
+
+Argus supports converting numbers from one base (radix) to another:
+
+| example query | result |
+| --- | --- |
+| 10 in hex | 0xA |
+| 10 in binary | 0b1010 |
+| 1010 binary to hex | 0xA |
+| convert FE to dec | 254 |
+
 ### Base64 & JWT Decoding
 
 Argus supports decoding UTF-8 base64 encoded strings and JWTs (JSON
