@@ -64,6 +64,20 @@ Argus has an [integrated math engine](https://bitbucket.org/axelclk/symja_androi
 | --- | --- |
 | sin(30°) | 0.5 |
 
+### Conversion Library
+
+Argus supports numeric conversions, and conversions from one base
+(radix) to another:
+
+| example query | result |
+| --- | --- |
+| mi to km | 1mi = 1.609344km |
+| 300F in celsius | 148.8886705555555893186492°C = 300°F |
+| 10 in hex | 0xA |
+| 10 in binary | 0b1010 |
+| 1010 binary to hex | 0xA |
+| convert FE to dec | 254 |
+
 ### Random Number Generation
 
 Argus supports generating a limited set of random numbers:
@@ -73,17 +87,6 @@ Argus supports generating a limited set of random numbers:
 | random hex | 946B2D46764836F904A0B4B842571469C83F6AF2AF619CAC0973B989A34C0C9C | 
 | random password | 4n$Kg4l1@M$C |
 | random uuid | 3c68645a-ed8b-4b28-81cc-8faa0bbb5bbe |
-
-### Conversion between numbers of different bases
-
-Argus supports converting numbers from one base (radix) to another:
-
-| example query | result |
-| --- | --- |
-| 10 in hex | 0xA |
-| 10 in binary | 0b1010 |
-| 1010 binary to hex | 0xA |
-| convert FE to dec | 254 |
 
 ### Base64 & JWT Decoding
 
@@ -137,8 +140,8 @@ date to the local time and to Unix epoch and back-again.
 
 | example query | result |
 | --- | --- |
-| current time | Various formats for current time | 
-| 2020-01-01T12:00:00Z | Various format for the time |
+| now, time, current time | Various formats for the current time | 
+| 2020-01-01T12:00:00Z | Various formats for the time |
 | 1675050793 epoch | Various formats for the time |
 
 ## How to Run
@@ -189,7 +192,12 @@ Future improvements could include:
   * A REPL style console to perform multiple math operations.
   * Display equations in MathML.
   * Plot equations.
-* A computation engine to handle unit conversion.
+* Ability to solve simple physical math problems with units, e.g.
+  * What is the volume of a cylinder 1m high by 0.5m diameter?
+  * How many acres in a 2km circle?
+  * What is the weight of a 1m iron cube?
+  * 5mins + 10mins + 2hrs
+* Add support for imperial numbers in the form feet'inches", e.g. 5'7".
 * Support search through local text, HTML or other documents.
 * Add ability to upload HTML archives and have Argus store, index and
   search those pages.
@@ -197,17 +205,23 @@ Future improvements could include:
   perhaps share those index results with other Argus users,
   e.g. peer-to-peer web indexing.
 * Support search of local images using ML.
-* A ML model to translate questions into queries (e.g. BERT).
-* A question and answer engine perhaps trained on Wikipedia/Wikidata/[DBpedia](https://www.dbpedia.org).
+* A  model to translate questions into standardised queries
+  (e.g. BERT).
+* A LLM to answer questions.
+  *  Perhaps trained on
+     Wikipedia/Wikidata/[DBpedia](https://www.dbpedia.org).
+  * Or use an OpenSource LLM.
 * Support a local copy of Wikipedia/Wikidata/DBpedia.
 * Support parsing and querying the semantic web (i.e. owl, json+ld, rdf etc).
 * Support a local copy of OpenStreetMap.
 * An integrated dictionary to handle spelling, definitions, anagrams, pronunciation etc.
 * An integrated thesaurus to handle synonyms, antonyms etc.
-* Ability to translate words and phrases.
+* Ability to translate words and phrases. Perhaps we can integrate
+  [FreeDict](https://freedict.org/).
 * Time conversion to other time zones including finding the day of the
-  week that a date falls on, and finding the number of days until a
-  given date.
+  week that a date falls on, and finding the number of days or weeks until a
+  given date, and finding a date plus or minus a number of days,
+  weeks.
 * Cache recent queries and provide a "private" search mode to disable caching.
 * Direct links to websites or calls to external APIs for weather, currency conversion, crypto & stock quotes etc.
 * Ability to search local databases / uploaded spreadsheets / uploaded
@@ -216,10 +230,12 @@ Future improvements could include:
 * A REST API that can be used to build private virtual assistants
   (e.g. replacements for Alexa, Siri, etc).
 * Calculate hashes of UTF-8 text strings.
-* Additional colour decoding, naming of colour and coverting to other
-  colour spaces.
-* Ability to search and return books that are no longer under
-  copyright.
+* Additional colour decoding, naming of colour (perhaps using ML) and
+  also HTML colour names and coverting to other colour spaces.
+* Ability to search and return books, stories, plays, poetry, proverbs,
+  fables, librettos, lyrics etc that are no longer under copyright.
+* Ability to search (by name, description and using ML) and return
+  scans of popular art works that are no longer under copyright.
 * Identify (and continue) numeric sequences.
 * Chemistry:
   * Enter chemical formula, e.g. C2H5OH and return the chemical name and

@@ -1,3 +1,4 @@
+////////////////////////////////////////////////////////////////////////////////
 package com.argus;
 
 import com.argus.resolver.*;
@@ -12,6 +13,7 @@ public class QueryEngine implements AutoCloseable {
                        new BaseConversionResolver(),
                        new CharacterResolver(),
                        new ColourResolver(),
+                       new ConversionResolver(),
                        new CurrentTimeResolver(),
                        new UnixEpochResolver(),
                        new Iso8601Resolver(),
@@ -21,7 +23,7 @@ public class QueryEngine implements AutoCloseable {
                        new WordPatternResolver(),
                        new MathResolver(),
                        new UnicodeResolver()};
-    
+
     public QueryResult tryResolve(final Query query) {
         // @todo Consider trying all queries, not just until we get the
         // first match, as there may be multiple results. We might also want
