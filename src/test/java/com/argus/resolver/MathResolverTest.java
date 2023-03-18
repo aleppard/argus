@@ -1,3 +1,4 @@
+////////////////////////////////////////////////////////////////////////////////
 package com.argus.resolver;
 
 import com.argus.Context;
@@ -12,7 +13,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Tests MathQuery class.
+ * Tests MathResolver class.
  */
 public class MathResolverTest {
 
