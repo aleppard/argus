@@ -1,3 +1,4 @@
+////////////////////////////////////////////////////////////////////////////////
 package com.argus;
 
 import java.io.IOException;
@@ -93,6 +94,10 @@ public class TableQueryResult implements QueryResult {
                   .collect(Collectors.toList()));
     }
 
+    public String getCellText(int row, int column) {
+        return (String)table.get(row).get(column).get("text");
+    }
+    
     public int getRowCount() {
         return table.size();
     }
