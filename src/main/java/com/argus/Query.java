@@ -1,3 +1,4 @@
+////////////////////////////////////////////////////////////////////////////////
 package com.argus;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class Query {
     private String rawQuery;
     private String normalisedQuery;
 
+    private List<String> wordList;
     private List<String> normalisedWordList;
     
     public Query(final Context context, final String query) {
@@ -24,17 +26,17 @@ public class Query {
         // @todo This should also collapse double spaces etc.
         this.normalisedQuery = this.rawQuery.toLowerCase();
 
-        this.normalisedWordList = buildNormalisedWordList(this.normalisedQuery);
+        this.wordList = buildWordList(this.rawQuery);
+        this.normalisedWordList = buildWordList(this.normalisedQuery);
     }
 
-    private static List<String> buildNormalisedWordList
+    private static List<String> buildWordList
         (final String queryString) {
         return new ArrayList(Arrays.stream(queryString.split("\\s"))
                              .map(word -> word.trim())
                              .collect(Collectors.toList()));
     }
     
-    // MYTODO DOC these
     public Context getContext() {
         return context;
     }
@@ -47,7 +49,11 @@ public class Query {
         return normalisedQuery;
     }
 
+    public List<String> getWordList() {
+        return new ArrayList<>(wordList);
+    }
+
     public List<String> getNormalisedWordList() {
-        return normalisedWordList;
+        return new ArrayList<>(normalisedWordList);
     }
 }
