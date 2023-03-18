@@ -81,7 +81,7 @@ public class ConversionResolver implements Resolver
         if (value != null) { return value; }
 
         final Set<Unit> units = parseUnit(string);
-        if (!units.isEmpty()) {
+        if (units != null) {
             return new ParsedQuantityValue(null, units);
         }
 
