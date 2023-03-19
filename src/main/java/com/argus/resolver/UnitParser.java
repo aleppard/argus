@@ -43,8 +43,8 @@ public class UnitParser
     // the Qudt ontology?
     private static Map<String, Unit> customUnitSymbols = 
         Map.of("lb", Units.LB,
-               "kph", Units.KiloM__PER__HR);
-               // No miles per hour?
+               "kph", Units.KiloM__PER__HR,
+               "mph", Units.MI__PER__HR);
 
     /**
      * Relax symbols to make them more easily matchable. For example users may
