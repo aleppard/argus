@@ -21,7 +21,7 @@ public class QueryServlet extends HttpServlet
         Logger.getLogger(QueryServlet.class.getName());
 
     private QueryEngine queryEngine = new QueryEngine();
-    
+
     @Override public void doGet(HttpServletRequest request,
                                 HttpServletResponse response)
         throws IOException {
@@ -44,15 +44,14 @@ public class QueryServlet extends HttpServlet
         QueryResult result = queryEngine.tryResolve(query);
 
         // If we couldn't process the query locally then redirect
-        // to DuckDuckGo if the query isn't local only.
+        // to a search engine if the query isn't local only.
         if (result == null) {
             if (isLocalQueryOnly) {
                 result = new EmptyQueryResult(query);
             }
             else {
-                // @todo This should be configurable.
                 final String url = 
-                    ("https://duckduckgo.com/?q=" +
+                    (Settings.getInstance().getDefaultSearchEngineUrl() +
                      URLEncoder.encode(queryParameter, "UTF-8"));
                 result = new RedirectionQueryResult(url);
             }

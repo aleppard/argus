@@ -1,3 +1,4 @@
+////////////////////////////////////////////////////////////////////////////////
 package com.argus;
 
 import java.io.InputStream;
@@ -30,8 +31,6 @@ public class FileServlet extends HttpServlet
     @Override public void doGet(HttpServletRequest request,
                                 HttpServletResponse response)
         throws IOException {
-
-        final String baseUrl = getBaseUrl(request);
         
         // Ignore /argus/ prefix if present.
         final String prefix = "/argus";
@@ -43,13 +42,14 @@ public class FileServlet extends HttpServlet
         if (uri.length() == 1) {
             uri = "/index.html";
         }
-
+        
         // @todo Refactor this.
         if (uri.equals("/opensearch.xml")) {
             // The opensearch.xml file needs to be updated with the
             // actual URL of Argus.
             Map<String, Object> arguments = new HashMap<>();
-            arguments.put("base_url", baseUrl);
+            arguments.put("base_url", getBaseUrl(request));
+            
             try {
                 Template template = templateEngine.getTemplate("web/" + uri);
                 template.process(arguments, response.getWriter());
@@ -57,6 +57,21 @@ public class FileServlet extends HttpServlet
             }
             catch (Exception exception) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            }
+        }
+        else if (uri.equals("/settings")) {
+            if (Authentication.isAuthorisedForAdminAccess(request)) {
+                // React web pages. Currenty only /settings.
+                InputStream input =
+                    FileServlet.class.getClassLoader().getResourceAsStream
+                    ("web/app.html");
+                ByteStreams.copy(input, response.getOutputStream());
+                response.setStatus(HttpServletResponse.SC_OK);
+            }
+            else {
+                response.addHeader("WWW-Authenticate",
+                                   "Basic realm=\"Settings\"");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }
         }
         else {

@@ -1,18 +1,21 @@
+////////////////////////////////////////////////////////////////////////////////
 package com.argus.resolver;
 
 import com.argus.RedirectionQueryResult;
 import com.argus.Query;
 import com.argus.QueryResult;
+import com.argus.Settings;
 
 import java.net.URLEncoder;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.yaml.snakeyaml.Yaml;
+import java.util.logging.Logger;
 
 /**
  * Query that handles DuckDuckGo style bang questions, e.g.
@@ -31,23 +34,29 @@ import org.yaml.snakeyaml.Yaml;
  */
 public class BangResolver implements Resolver
 {
+    private static final Logger LOGGER =
+        Logger.getLogger(BangResolver.class.getName());
+    
     private Map<String, String> bangQueries = new HashMap<>();
 
     public BangResolver() {
-        Yaml yaml = new Yaml();
-        InputStream inputStream = this.getClass()
-            .getClassLoader()
-            .getResourceAsStream("bangs.yaml");
+        final Map<String, Object> bangs = Settings.getInstance().getBangs();
 
-        // Load list of bang queries, e.g. x, y, z: URL
-        Map<String, Object> bangListQueries = yaml.load(inputStream);
+        for (final Map.Entry<String, Object> bang : bangs.entrySet()) {
+            final Map<String, Object> fields =
+                (Map<String, Object>)bang.getValue();
+            final String url = ((String)fields.get("url")).trim();
+            
+            // Add each bang shortcut alternate, e.g. gh, git, github.
+            final List<Object> shortcuts =
+                (List<Object>)fields.get("shortcuts");
 
-        for (Map.Entry<String, Object> entry : bangListQueries.entrySet()) {
-            // Add each bang alternate, e.g. gh, git, github.
-            final String[] bangs = entry.getKey().split(",");
-            for (String bang : bangs) {
-                final String url = (String)entry.getValue();
-                bangQueries.put(bang.trim(), url.trim());
+            for (final Object shortcut  : shortcuts) {
+                if (bangQueries.containsKey((String)shortcut)) {
+                    LOGGER.warning("More than one bang using shortcut " +
+                                   shortcut + ".");
+                }
+                bangQueries.put(((String)shortcut).trim(), url);
             }
         }
     }

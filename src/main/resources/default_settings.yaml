@@ -1,0 +1,62 @@
+search_engines: [bing, brave, ddg, google]
+default_search_engine: ddg
+
+# https://duckduckgo.com/bang
+bangs:
+        amazon:
+                name: Amazon
+                shortcuts: [a, amazon]
+                url: https//amazon.com/s?k=
+        bing:
+                name: Bing
+                shortcuts: [bing, b]
+                url: https://www.bing.com/search?q=
+        brave:
+                name: Brave
+                shortcuts: [brave]
+                url: https://search.brave.com/search?q=
+
+        ddg:
+                name: DuckDuckGo
+                shortcuts: [ddg]
+                url: https://duckduckgo.com/?q=
+
+        google:
+                name: Google    
+                shortcuts: [google, g]
+                url: https://google.com/search?q=
+
+        github:
+                name: GitHub
+                shortcuts: [gh, git, github]
+                url: https://github.com/search?q=
+
+        mdn:
+                name: Mozilla Developer Network
+                shortcuts: [mdn]
+                url: https://developer.mozilla.org/search?q=
+                
+        mvn:
+                name: Maven
+                shortcuts: [mvn, mvnrep]
+                url: https://mvnrepository.com/search?q=
+
+        npm:
+                name: NPM
+                shortcuts: [npm, npmjs]
+                url: https://www.npmjs.com/search?q=
+
+        so:
+                name: Stack Overflow
+                shortcuts: [so]
+                url: https://stackoverflow.com/search?q=
+
+        wikipedia:
+                name: Wikipedia
+                shortcuts: [w, wikipedia]
+                url: https://www.wikipedia.org/search-redirect.php?search=
+
+        youtube:
+                name: YouTube
+                shortcuts: [yt, youtube]
+                url: https://www.youtube.com/results?search_query=

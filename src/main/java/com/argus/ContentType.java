@@ -5,6 +5,7 @@ package com.argus;
  */
 public class ContentType {
     public static final String BINARY = "application/octet-stream";
+    public static final String CSS = "text/css";
     public static final String HTML = "text/html; charset=utf-8";
     public static final String JAVASCRIPT =
         "application/javascript; charset=utf-8";
@@ -17,6 +18,8 @@ public class ContentType {
         if (extension == null) return BINARY;
         
         switch (extension) {
+        case "css":
+            return CSS;
         case "html":
             return HTML;
         case "js":

@@ -14,6 +14,10 @@ public class RedirectionQueryResult implements QueryResult {
     public RedirectionQueryResult(final String url) {
         this.url = url;
     }
+
+    public String getUrl() {
+        return url;
+    }
     
     @Override public void setResponse(HttpServletResponse response)
         throws IOException {

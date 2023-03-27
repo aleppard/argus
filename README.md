@@ -7,8 +7,9 @@ converters). Its purpose is to maximise the number of queries that can be
 performed locally, and for those queries that cannot be performed
 locally to maximise the number that can be performed directly on the
 websites that can supply answers to those queries. The remaining
-queries are passed to DuckDuckGo. Note that queries that are forwarded to
-DuckDuckGo are no more private than those run directly on their website.
+queries are passed to DuckDuckGo (or other search engine as
+configured). Note that queries that are forwarded to DuckDuckGo (or
+other) are no more private than those run directly on their website.
 
 Argus provides three major benefits over using a search engine
 directly:
@@ -148,7 +149,7 @@ date to the local time and to Unix epoch and back-again.
 
 ### Docker
 
-The simplest way to run is using Docker. Install [Docker](https://www.docker.com/) and run the following command:
+The simplest way to try Argus is using Docker. Install [Docker](https://www.docker.com/) and run the following command:
 
     docker run --rm -p 3000:8080 -it aleppard/argus:0.1
 
@@ -164,6 +165,15 @@ You can then visit <http://localhost:3000> in your browser.
 The container is available in DockerHub [here](https://hub.docker.com/r/aleppard/argus).
 
 You can also build and run the Docker image yourself, or build the source and deploy to a local [Apache Tomcat](https://tomcat.apache.org/) server.
+
+If you want to be able to configure Argus (and later store data) you'll need 
+to create a volume and set a password to access settings:
+
+    docker volume create argus
+    
+Then
+
+    docker run -e ARGUS_ADMIN_PASSWORD='mysecretpassword' -p 3000:8080 -it --mount source=argus,target=/argus aleppard/argus:0.1
 
 ## Setting as default search
 
@@ -184,7 +194,6 @@ Future improvements could include:
 * Add ability to hit return twice to forward locally returned results
   directly to DuckDuckGo (e.g. if a locally returned result is not
   sufficient).
-* Add ability to specify a different default search engine than DuckDuckGo.
 * Custom bang commands.
 * Support more bang commands.
 * Improved math support.
@@ -269,7 +278,10 @@ Future improvements could include:
 
 Install maven and jdk11+.
 
-    mvn package 
+    mvn package
+
+Pass `-Pproduction` argument to the package command to build a
+production version without frontend debug information.
 
 ### Deploy to Tomcat
 
@@ -279,24 +291,25 @@ Create `~/.m2/settings.xml` using `example_settings.xml` as a guide. Set Tomcat 
 
 The first build and deployment can be made by running:
 
-    mvn package
-    mvn cargo:deploy 
+    mvn package cargo:deploy
     
 Then to re-deploy:
-    
-    mvn package
-    mvn cargo:redeploy 
 
-Pass `-P `argument to the deploy command to deploy to a production instance, otherwise it will deploy to the development instance. See `example_settings.xml` for more information.
+    mvn package cargo:redeploy
+
+Pass `-Pproduction` argument to the command to build a
+production version and deploy the the production instance. Otherwise
+it will build the development version with front-end symbols and
+deploy to the development instance. See `example_settings.xml` for
+more information.
 
 ### Docker
 
-You can build the Docker image yourself and run it locally:
+You can build the Docker image yourself:
 
     mvn package
     docker build -t aleppard/argus:0.1 .
-    docker run -p 3000:8080 -it aleppard/argus:0.1
 
-Pass `-d` argument to `docker run` to run detached (i.e. in the background).
-    
-You may need to prefix the `docker` commands with `sudo`.
+Pass `-Pproduction` argument to `mvn package` for production.
+
+Then you can run the Docker container as described aboe.
