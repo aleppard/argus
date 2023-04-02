@@ -1,4 +1,4 @@
-<#macro meta>
+<#macro meta query>
 <meta charset=UTF-8>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
 <meta name="viewport" content="width=device-width, initial_scale=1.0, user_scalabe=no"/>
@@ -9,7 +9,7 @@
   title="Argus"
   href="/opensearch.xml"/>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<title>Argus</title>
+<title>Argus — ${query?truncate(20)}</title>
 </#macro>
 
 <#macro style>

@@ -121,9 +121,10 @@ characters based on their name.
 
 | example query | result |
 | --- | --- |
-| ✔ | Information about HEAVY CHECK MARK |
+| ✔ | Information about U+2714 HEAVY CHECK MARK (✔) |
 | a | Information about letter a |
 | unicode greek | List all Greek unicode characters |
+| U+2714 | Information about U+2714 HEAVY CHECK MARK (✔) |
 
 ### Word Pattern Matching
 
@@ -201,6 +202,7 @@ Future improvements could include:
   * A REPL style console to perform multiple math operations.
   * Display equations in MathML.
   * Plot equations.
+  * Factorisation / prime test.
 * Ability to solve simple physical math problems with units, e.g.
   * What is the volume of a cylinder 1m high by 0.5m diameter?
   * How many acres in a 2km circle?
@@ -260,7 +262,6 @@ Future improvements could include:
   * Generate randon numbers in specified range, eg. "random [0, 12)".
   * Add entropy on client-side to improve security.
 * Detect and decode encoded data without context, including:
-  * Unicode code point
   * Unix epoch
   * Basic ciphers (e.g. Caeser, Vignere, etc)
   * Any number and return as much data about that number (e.g. is it

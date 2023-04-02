@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -40,24 +41,32 @@ public class BangResolver implements Resolver
     private Map<String, String> bangQueries = new HashMap<>();
 
     public BangResolver() {
-        final Map<String, Object> bangs = Settings.getInstance().getBangs();
-
-        for (final Map.Entry<String, Object> bang : bangs.entrySet()) {
-            final Map<String, Object> fields =
-                (Map<String, Object>)bang.getValue();
-            final String url = ((String)fields.get("url")).trim();
+        try {
+            final Map<String, Object> bangs = Settings.getInstance().getBangs();
             
-            // Add each bang shortcut alternate, e.g. gh, git, github.
-            final List<Object> shortcuts =
-                (List<Object>)fields.get("shortcuts");
-
-            for (final Object shortcut  : shortcuts) {
-                if (bangQueries.containsKey((String)shortcut)) {
-                    LOGGER.warning("More than one bang using shortcut " +
-                                   shortcut + ".");
+            for (final Map.Entry<String, Object> bang : bangs.entrySet()) {
+                final Map<String, Object> fields =
+                    (Map<String, Object>)bang.getValue();
+                final String url = ((String)fields.get("url")).trim();
+                
+                // Add each bang shortcut alternate, e.g. gh, git, github.
+                final List<Object> shortcuts =
+                    (List<Object>)fields.get("shortcuts");
+                
+                for (final Object shortcut  : shortcuts) {
+                    if (bangQueries.containsKey((String)shortcut)) {
+                        LOGGER.warning("More than one bang using shortcut " +
+                                       shortcut + ".");
+                    }
+                    bangQueries.put(((String)shortcut).trim(), url);
                 }
-                bangQueries.put(((String)shortcut).trim(), url);
             }
+        }
+        catch (Exception exception) {
+            // @todo The parsing logic should be in the settings class
+            // not here.
+            LOGGER.log(Level.SEVERE, "Error parsing settings.", exception);
+            throw exception;
         }
     }
 

@@ -32,9 +32,9 @@ public class Query {
 
     private static List<String> buildWordList
         (final String queryString) {
-        return new ArrayList(Arrays.stream(queryString.split("\\s"))
-                             .map(word -> word.trim())
-                             .collect(Collectors.toList()));
+        return Arrays.stream(queryString.split("\\s"))
+            .map(word -> word.trim())
+            .collect(Collectors.toList());
     }
     
     public Context getContext() {
