@@ -51,6 +51,8 @@ public class MathResolver implements AutoCloseable, Resolver
         // Return numeric results not just symbolic results.
         // @todo Why doesn't this work?
         // EvalEngine.get().setNumericMode(true);
+        // EvalEngine.get().setQuietMode(true);
+        // EvalEngine.get().setTraceMode(false);
     }
     
     public @Override QueryResult tryResolve(final Query query) {
