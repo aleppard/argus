@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang = "en">
   <head>
-    <@core.meta/>
+    <@core.meta query/>
     <style>
       <@core.style/>
       .result {
