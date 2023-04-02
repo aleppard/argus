@@ -12,7 +12,7 @@ public class SettingsTest {
 
     @Test public void test() {
         // @todo Note this would not work correctly if there happens to be
-        // a /argus/settings.xml file.
+        // a ~/.argus.xml or /argus/settings.xml file.
         final Settings settings = Settings.getInstance();
         
         assertEquals("ddg", settings.getDefaultSearchEngine());
