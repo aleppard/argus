@@ -151,11 +151,11 @@ date to the local time and to Unix epoch and back-again.
 
 The simplest way to try Argus is using Docker. Install [Docker](https://www.docker.com/) and run the following command:
 
-    docker run --rm -p 3000:8080 -it aleppard/argus:0.1
+    docker run --rm -p 3000:3000 -it aleppard/argus:0.1
 
 or
 
-    docker run --rm -p 3000:8080 -it aleppard/argus:0.1 -d
+    docker run --rm -p 3000:3000 -it aleppard/argus:0.1 -d
     docker stop <container id>
 
 You may need to prefix the `docker` commands with `sudo`.
@@ -164,7 +164,7 @@ You can then visit <http://localhost:3000> in your browser.
 
 The container is available in DockerHub [here](https://hub.docker.com/r/aleppard/argus).
 
-You can also build and run the Docker image yourself, or build the source and deploy to a local [Apache Tomcat](https://tomcat.apache.org/) server.
+You can also build and run the Docker image yourself.
 
 If you want to be able to configure Argus (and later store data) you'll need 
 to create a volume and set a password to access settings:
@@ -173,7 +173,7 @@ to create a volume and set a password to access settings:
     
 Then
 
-    docker run -e ARGUS_ADMIN_PASSWORD='mysecretpassword' -p 3000:8080 -it --mount source=argus,target=/argus aleppard/argus:0.1
+    docker run -e ARGUS_ADMIN_PASSWORD='mysecretpassword' -p 3000:3000 -it --mount source=argus,target=/argus aleppard/argus:0.1
 
 ## Setting as default search
 
@@ -274,36 +274,39 @@ Future improvements could include:
   * Generate sound from frequency (Hz), from wavelength, from note 
     (e.g. "middle-c"), chord name, text or phonetics.
 
-## Building From Source
+## Building and running from Source
 
-Install maven and jdk11+.
+Argus is written using a Java SpringBoot back-end with a React +
+tailwindcss front-end.
+
+Install maven and jdk17+ then run:
+
+    mvn spring-boot:run
+
+Pass `-Pproduction` argument to build a production version without
+frontend debug information.
+
+You can then visit <http://localhost:3000> in your browser.
+
+### Deploying
+
+#### Jar
+
+You can deploy the jar by first building it:
 
     mvn package
-
-Pass `-Pproduction` argument to the package command to build a
-production version without frontend debug information.
-
-### Deploy to Tomcat
-
-Install and configure [Apache Tomcat](https://tomcat.apache.org/).
-
-Create `~/.m2/settings.xml` using `example_settings.xml` as a guide. Set Tomcat credentials.
-
-The first build and deployment can be made by running:
-
-    mvn package cargo:deploy
     
-Then to re-deploy:
+Pass `-Pproduction` argument to `mvn package` for production.
 
-    mvn package cargo:redeploy
+You can then copy the `jar` to the desired place:
 
-Pass `-Pproduction` argument to the command to build a
-production version and deploy the the production instance. Otherwise
-it will build the development version with front-end symbols and
-deploy to the development instance. See `example_settings.xml` for
-more information.
+    cp target/argus.jar argus.jar
+    
+Then you can run the jar with:
 
-### Docker
+    java -jar argus.jar
+
+#### Docker
 
 You can build the Docker image yourself:
 

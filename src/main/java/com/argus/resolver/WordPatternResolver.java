@@ -1,3 +1,4 @@
+////////////////////////////////////////////////////////////////////////////////
 package com.argus.resolver;
 
 import com.argus.Query;
@@ -14,6 +15,8 @@ import java.util.List;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.springframework.core.io.ClassPathResource;
 
 /**
  * A query that returns a list of words that match a pattern.
@@ -36,9 +39,8 @@ public class WordPatternResolver implements Resolver
         words = new ArrayList<>();
 
         try {
-            InputStream inputStream = this.getClass()
-                .getClassLoader()
-                .getResourceAsStream("word_list.txt");
+            InputStream inputStream =
+                new ClassPathResource("/word_list.txt").getInputStream();
             InputStreamReader inputStreamReader =
                 new InputStreamReader(inputStream);
             BufferedReader bufferedReader =

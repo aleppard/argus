@@ -10,8 +10,6 @@ import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
 
-import no.api.freemarker.java8.Java8ObjectWrapper;
-
 /**
  * Class to configure the template engine used.
  */
@@ -34,11 +32,6 @@ public class TemplateEngine {
         xmlConfiguration.setTemplateExceptionHandler
             (TemplateExceptionHandler.RETHROW_HANDLER);
         xmlConfiguration.setOutputFormat(PlainTextOutputFormat.INSTANCE);
-        
-        Java8ObjectWrapper wrapper =
-            new Java8ObjectWrapper(FREEMARKER_VERSION);
-        wrapper.setExposeFields(true);
-        xmlConfiguration.setObjectWrapper(wrapper);
     }
 
     public Template getTemplate(final String templateName) {
@@ -52,3 +45,4 @@ public class TemplateEngine {
         }
     }
 }
+

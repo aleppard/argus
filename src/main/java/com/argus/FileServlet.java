@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -18,23 +17,32 @@ import com.google.common.io.ByteStreams;
 
 import freemarker.template.Template;
 
+import org.springframework.core.io.ClassPathResource;
+
+import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.GetMapping;
+
 /**
  * Servlet to access public front-end files.
  */
-public class FileServlet extends HttpServlet
+@RestController
+public class FileServlet
 {
     private static final Logger LOGGER =
         Logger.getLogger(FileServlet.class.getName());
 
     private TemplateEngine templateEngine = new TemplateEngine();
-    
-    @Override public void doGet(HttpServletRequest request,
-                                HttpServletResponse response)
+
+    @GetMapping({"*", "js/*"})
+    public void get(final HttpServletRequest request,
+                    final HttpServletResponse response)
         throws IOException {
-        
+
         // Ignore /argus/ prefix if present.
         final String prefix = "/argus";
         String uri = request.getRequestURI();
+        
         if (uri.startsWith(prefix)) {
             uri = uri.substring(prefix.length());
         }
@@ -51,7 +59,7 @@ public class FileServlet extends HttpServlet
             arguments.put("base_url", getBaseUrl(request));
             
             try {
-                Template template = templateEngine.getTemplate("web/" + uri);
+                Template template = templateEngine.getTemplate("/web" + uri);
                 template.process(arguments, response.getWriter());
                 response.setStatus(HttpServletResponse.SC_OK);
             }
@@ -63,8 +71,8 @@ public class FileServlet extends HttpServlet
             if (Authentication.isAuthorisedForAdminAccess(request)) {
                 // React web pages. Currenty only /settings.
                 InputStream input =
-                    FileServlet.class.getClassLoader().getResourceAsStream
-                    ("web/app.html");
+                    new ClassPathResource("/web/app.html")
+                    .getInputStream();
                 ByteStreams.copy(input, response.getOutputStream());
                 response.setStatus(HttpServletResponse.SC_OK);
             }
@@ -78,14 +86,15 @@ public class FileServlet extends HttpServlet
             final String extension = getFileExtension(uri);
             response.setContentType
                 (ContentType.fromFileExtension(extension));
-            InputStream input =
-                FileServlet.class.getClassLoader().getResourceAsStream
-                ("web/" + uri);
-            if (input != null) {
+            final ClassPathResource resource =
+                new ClassPathResource("/web" + uri);
+            if (resource.exists()) {
+                InputStream input = resource.getInputStream();
                 ByteStreams.copy(input, response.getOutputStream());
                 response.setStatus(HttpServletResponse.SC_OK);
             }
             else {
+                LOGGER.info("404 " + uri);
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
         }
@@ -103,7 +112,7 @@ public class FileServlet extends HttpServlet
     private String getBaseUrl(final HttpServletRequest request) {
         final String url = request.getRequestURL().toString();
         final int lastSlashIndex = url.lastIndexOf('/');
-
+        
         return url.substring(0, lastSlashIndex + 1);
     }
 }

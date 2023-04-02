@@ -1,6 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 package com.argus;
 
+// MYTODO update instructions on docker site
+
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -16,16 +19,18 @@ import java.util.logging.Logger;
 
 import java.util.stream.Collectors;
 
+import org.springframework.core.io.ClassPathResource;
+
 import org.yaml.snakeyaml.Yaml;
 
 /**
  * Class to manage admin settings.
+ *
+ * @todo Consider making this a service.
+ * @todo Consider storing default settings in application.yaml.
  */
 public class Settings {
 
-    // @todo Add support for Windows file paths.
-    private static String FILE_NAME = "/argus/settings.yaml";
-    
     private static final Logger LOGGER =
         Logger.getLogger(Settings.class.getName());
 
@@ -40,20 +45,36 @@ public class Settings {
         // read default settings.
         try {
             try {
-                FileInputStream stream = new FileInputStream(FILE_NAME);
+                FileInputStream stream = new FileInputStream(getFileName());
                 read(stream);
             }
             catch (FileNotFoundException exception) {
-                InputStream stream = this.getClass()
-                    .getClassLoader()
-                    .getResourceAsStream("default_settings.yaml");
-                read(stream);
+                InputStream input =
+                    new ClassPathResource("/default_settings.yaml")
+                    .getInputStream();
+                read(input);
             }
         }
         catch (Exception exception) {
             LOGGER.log(Level.SEVERE, "Error reading settings",
                        exception);
         }
+    }
+
+    /**
+     * Return settings file name.
+     *
+     * We store settigs in ~/.argus.yaml unless overridden by
+     * the ARGUS_SETTINGS_FILE environment variable (used when run
+     * in a Docker container).
+     */
+    private static String getFileName() {
+        String fileName = System.getenv("ARGUS_SETTINGS_FILE");
+        if (fileName == null || fileName.length() == 0) {
+            fileName = System.getProperty("user.home") + File.separator +
+                ".argus.yaml";
+        }
+        return fileName;
     }
 
     private void read(InputStream stream) throws FileNotFoundException {
@@ -106,7 +127,7 @@ public class Settings {
     public void save() {
         try {
             Yaml yaml = new Yaml();
-            FileWriter writer = new FileWriter(FILE_NAME);
+            FileWriter writer = new FileWriter(getFileName());
             
             Map<String, Object> settings = new HashMap<>();
             settings.put("search_engines", searchEngines);

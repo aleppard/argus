@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 import java.util.stream.Collectors;
 
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -18,16 +17,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONObject;
 
+import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+
 /**
  * An API that lets the user retrieve or set admin settings.
  */
-public class SettingsServlet extends HttpServlet
+@RestController
+public class SettingsServlet
 {
     private static final Logger LOGGER =
         Logger.getLogger(SettingsServlet.class.getName());
 
-    @Override public void doGet(HttpServletRequest request,
-                                HttpServletResponse response)
+    @GetMapping("/admin/settings.json")
+    public void get(HttpServletRequest request,
+                    HttpServletResponse response)
         throws IOException {
         
         response.setContentType("application/json; charset=utf-8");
@@ -58,9 +64,10 @@ public class SettingsServlet extends HttpServlet
         
         mapper.writeValue(response.getWriter(), settings);        
     }
-    
-    @Override public void doPut(HttpServletRequest request,
-                                HttpServletResponse response)
+
+    @PutMapping("/admin/settings.json")    
+    public void put(HttpServletRequest request,
+                    HttpServletResponse response)
         throws IOException {
 
         response.setContentType("application/json; charset=utf-8");

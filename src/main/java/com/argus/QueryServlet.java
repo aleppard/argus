@@ -8,22 +8,27 @@ import java.io.UnsupportedEncodingException;
 
 import java.util.logging.Logger;
 
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * Servlet to run user queries.
  */
-public class QueryServlet extends HttpServlet
+@RestController
+public class QueryServlet
 {
     private static final Logger LOGGER =
         Logger.getLogger(QueryServlet.class.getName());
 
     private QueryEngine queryEngine = new QueryEngine();
 
-    @Override public void doGet(HttpServletRequest request,
-                                HttpServletResponse response)
+    @GetMapping("/query")    
+    public void get(HttpServletRequest request,
+                    HttpServletResponse response)
         throws IOException {
 
         boolean isLocalQueryOnly = false;
@@ -58,10 +63,5 @@ public class QueryServlet extends HttpServlet
         }
             
         result.setResponse(response);
-    }
-
-    @Override public void destroy() {
-        queryEngine.close();
-        queryEngine = null;
     }
 }
