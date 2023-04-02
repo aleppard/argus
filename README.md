@@ -214,11 +214,11 @@ Future improvements could include:
   perhaps share those index results with other Argus users,
   e.g. peer-to-peer web indexing.
 * Support search of local images using ML.
-* A  model to translate questions into standardised queries
+* A model to translate questions into standardised queries
   (e.g. BERT).
 * A LLM to answer questions.
-  *  Perhaps trained on
-     Wikipedia/Wikidata/[DBpedia](https://www.dbpedia.org).
+  * Perhaps trained on
+    Wikipedia/Wikidata/[DBpedia](https://www.dbpedia.org).
   * Or use an OpenSource LLM.
 * Support a local copy of Wikipedia/Wikidata/DBpedia.
 * Support parsing and querying the semantic web (i.e. owl, json+ld, rdf etc).
@@ -243,6 +243,7 @@ Future improvements could include:
   also HTML colour names and coverting to other colour spaces.
 * Ability to search and return books, stories, plays, poetry, proverbs,
   fables, librettos, lyrics etc that are no longer under copyright.
+  Perhaps integrate https://github.com/Lyrics/lyrics
 * Ability to search (by name, description and using ML) and return
   scans of popular art works that are no longer under copyright.
 * Identify (and continue) numeric sequences.
@@ -315,4 +316,4 @@ You can build the Docker image yourself:
 
 Pass `-Pproduction` argument to `mvn package` for production.
 
-Then you can run the Docker container as described aboe.
+Then you can run the Docker container as described above.
