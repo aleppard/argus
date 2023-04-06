@@ -115,7 +115,7 @@ public class FileServlet
         String url;
         final String xForwardedHost = request.getHeader("x-forwarded-host");
         if (xForwardedHost != null) {
-            // @todo How can we get this information?
+            // @todo How can well tell whether it should be http(s)?
             url = "https://" + xForwardedHost + "/";
         }
         else {
