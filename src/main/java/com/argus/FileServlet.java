@@ -42,7 +42,7 @@ public class FileServlet
         // Ignore /argus/ prefix if present.
         final String prefix = "/argus";
         String uri = request.getRequestURI();
-        
+
         if (uri.startsWith(prefix)) {
             uri = uri.substring(prefix.length());
         }
@@ -110,9 +110,20 @@ public class FileServlet
 
     /** Get the base URL for this server. */
     private String getBaseUrl(final HttpServletRequest request) {
-        final String url = request.getRequestURL().toString();
-        final int lastSlashIndex = url.lastIndexOf('/');
-        
-        return url.substring(0, lastSlashIndex + 1);
+        // If the x-forwarded-host header is set then we use that.
+        // This way we can work behind a proxy and return the host URL.
+        String url;
+        final String xForwardedHost = request.getHeader("x-forwarded-host");
+        if (xForwardedHost != null) {
+            // @todo How can we get this information?
+            url = "https://" + xForwardedHost + "/";
+        }
+        else {
+            url = request.getRequestURL().toString();
+            final int lastSlashIndex = url.lastIndexOf('/');
+            url = url.substring(0, lastSlashIndex + 1);
+        }
+
+        return url;
     }
 }
