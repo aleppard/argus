@@ -113,6 +113,7 @@ public class TableQueryResult implements QueryResult {
         try {
             Template template =
                 templateEngine.getTemplate("templates/table-query-result.html.ftl");
+            response.addHeader("Content-Type", ContentType.HTML);            
             template.process(arguments, response.getWriter());
             response.setStatus(HttpServletResponse.SC_OK);
         }

@@ -38,6 +38,7 @@ public class EmptyQueryResult implements QueryResult {
          try {
              Template template =
                  templateEngine.getTemplate("templates/empty-query-result.html.ftl");
+             response.addHeader("Content-Type", ContentType.HTML);
              template.process(arguments, response.getWriter());
              response.setStatus(HttpServletResponse.SC_OK);
          }
