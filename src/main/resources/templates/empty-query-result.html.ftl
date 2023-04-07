@@ -1,3 +1,4 @@
+<#ftl encoding="utf-8">
 <#import "./core.ftl" as core>
 <!DOCTYPE html>
 <html lang = "en">

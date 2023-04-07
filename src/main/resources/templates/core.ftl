@@ -1,3 +1,4 @@
+<#ftl encoding="utf-8">
 <#macro meta query>
 <meta charset=UTF-8>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
