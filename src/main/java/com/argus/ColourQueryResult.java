@@ -84,7 +84,7 @@ public class ColourQueryResult implements QueryResult {
 
         try {
             Template template =
-                templateEngine.getTemplate("templates/colour-query-result.html");
+                templateEngine.getTemplate("templates/colour-query-result.html.ftl");
             template.process(arguments, response.getWriter());
             response.setStatus(HttpServletResponse.SC_OK);
         }
