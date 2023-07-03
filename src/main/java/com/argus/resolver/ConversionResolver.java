@@ -197,7 +197,7 @@ public class ConversionResolver implements Resolver
      * bridge is "in".
      */
     private static String findBridge(final String queryString) {
-        String[] bridges = new String[]{"in an", "in a", "in", "to"};
+        String[] bridges = new String[]{"in an", "in a", "in", "per", "to"};
         for (final String bridge : bridges) {
             if (queryString.contains(" " + bridge + " ")) {
                 return bridge;
