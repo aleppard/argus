@@ -50,12 +50,13 @@ To run the query directly on a specific search engine:
 | `!brave` | Run the query directly on Brave |
 | `!ddg` | Run the query directly on DuckDuckGo |
 | `!g` | Run the query directly on Google |
+| `!ma` | Run the query directly on Marginalia |
 
 Queries can be prefixed with "@" for Firefox style at queries, e.g.
 
     @amazon Wuthering heights
 
-See [the full list of supported commands](src/main/resources/bangs.yaml).
+See [the full list of supported commands](src/main/resources/default_settings.yaml).
 
 ### Math Engine
 

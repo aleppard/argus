@@ -1,4 +1,4 @@
-search_engines: [bing, brave, ddg, google]
+search_engines: [bing, brave, ddg, google, ma]
 default_search_engine: ddg
 
 # https://duckduckgo.com/bang
@@ -31,6 +31,11 @@ bangs:
                 shortcuts: [gh, git, github]
                 url: https://github.com/search?q=
 
+        ma:
+                name: Marginalia
+                shortcuts: [ma]
+                url: https://search.marginalia.nu/search?query=
+
         mdn:
                 name: Mozilla Developer Network
                 shortcuts: [mdn]
@@ -45,6 +50,11 @@ bangs:
                 name: NPM
                 shortcuts: [npm, npmjs]
                 url: https://www.npmjs.com/search?q=
+
+        pypi:
+                name: Python Package Index
+                shortcuts: [pypi]
+                url: https://pypi.org/search?q=
 
         so:
                 name: Stack Overflow
