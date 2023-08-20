@@ -147,6 +147,14 @@ date to the local time and to Unix epoch and back-again.
 | 2020-01-01T12:00:00Z | Various formats for the time |
 | 1675050793 epoch | Various formats for the time |
 
+### IP Address
+
+Argus supports detecting and return the client's IP address.
+
+| example query | result |
+| --- | --- |
+| ip | 127.0.0.1 | 
+
 ## How to Run
 
 ### Docker

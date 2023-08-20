@@ -8,11 +8,18 @@ import java.time.ZoneId;
 public class Context {
 
     private ZoneId zoneId = null;
-    
+    private String clientIp = null;
+
     public Context(final String timeZone) {
+        this(timeZone, null);
+    }
+    
+    public Context(final String timeZone,
+                   final String clientIp) {
         if (timeZone != null) {
             try {
                 this.zoneId = ZoneId.of(timeZone);
+                this.clientIp = clientIp;
             }
             catch (Exception exception) {
                 // If we don't have the time zone we don't need to fail.
@@ -27,5 +34,12 @@ public class Context {
      */
     public ZoneId getZoneId() {
         return zoneId;
+    }
+
+    /**
+     * Return the IP address of the client.
+     */
+    public String getClientIp() {
+        return clientIp;
     }
 }

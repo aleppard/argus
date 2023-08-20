@@ -16,6 +16,7 @@ public class QueryEngine implements AutoCloseable {
                        new ConversionResolver(),
                        new CurrentTimeResolver(),
                        new UnixEpochResolver(),
+                       new IpResolver(),
                        new Iso8601Resolver(),
                        new RandomNumberGeneratorResolver(),
                        new JwtDecoderResolver(),
