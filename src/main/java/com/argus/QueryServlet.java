@@ -44,7 +44,8 @@ public class QueryServlet
             isLocalQueryOnly = true;
         }
 
-        final Context context = new Context(request.getParameter("time_zone"));
+        final Context context = new Context(request.getParameter("time_zone"),
+                                            getIp(request));
         final Query query = new Query(context, queryString);
         QueryResult result = queryEngine.tryResolve(query);
 
@@ -63,5 +64,23 @@ public class QueryServlet
         }
             
         result.setResponse(response);
+    }
+
+    /**
+     * Retrieve the client's IP address.
+     */
+    private String getIp(final HttpServletRequest request) {
+        final String xForwardedFor = request.getHeader("x-forwarded-for");
+        if (xForwardedFor != null) {
+            // Find the IP address of the client if we are behind a proxy.
+            // @todo This may not work if we are behind multiple proxies
+            // or if the client is spoofing a proxy.
+            final String[] ips = xForwardedFor.split(",");
+            if (ips.length >= 1) {
+                return ips[0];
+            }
+        }
+
+        return request.getRemoteAddr();
     }
 }
