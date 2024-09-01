@@ -83,7 +83,7 @@ public class SettingsServlet
         InputSettings settings =
             mapper.readValue(request.getReader(), InputSettings.class);
 
-        // @todo Validate the default serach engine.
+        // @todo Validate the default search engine.
         Settings.getInstance().setDefaultSearchEngine
             (settings.defaultSearchEngine);
         Settings.getInstance().save();

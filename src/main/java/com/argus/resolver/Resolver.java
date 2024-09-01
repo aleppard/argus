@@ -9,7 +9,7 @@ import com.argus.QueryResult;
 public interface Resolver {
 
     /**
-     * Try to fufill the given query. If the query can be fufilled return
+     * Try to fulfil the given query. If the query can be fulfilled return
      * the query result otherwise returns null.
      */
     public QueryResult tryResolve(final Query query);

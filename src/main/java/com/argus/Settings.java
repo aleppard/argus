@@ -64,7 +64,7 @@ public class Settings {
     /**
      * Return settings file name.
      *
-     * We store settigs in ~/.argus.yaml unless overridden by
+     * We store settings in ~/.argus.yaml unless overridden by
      * the ARGUS_SETTINGS_FILE environment variable (used when run
      * in a Docker container).
      */

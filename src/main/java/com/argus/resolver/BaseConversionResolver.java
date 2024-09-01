@@ -18,7 +18,7 @@ import com.argus.SingleQueryResult;
  * 1010111 then we should provide a conversion from binary.
  * @todo If the user types "1011 to dec" then we should make the
  * assumption the input number is binary not decimal.
- * @todo Support converstion to/from arbitrary bases.
+ * @todo Support conversion to/from arbitrary bases.
  */
 public class BaseConversionResolver implements Resolver
 {

@@ -59,7 +59,7 @@ public class ConversionResolverTest {
         // @todo Drop the decimal point here.
         assertEquals("10.0m = 1000cm", tryResolve("1000cm in metres"));
         
-        // @todo Also support "m in cm" giing 100 not 0.01.        
+        // @todo Also support "m in cm" returning 100 not 0.01.        
         assertEquals("1cm = 0.01m", tryResolve("m in 1cm"));
         
         assertEquals("1s = 1000ms", tryResolve("ms in s"));

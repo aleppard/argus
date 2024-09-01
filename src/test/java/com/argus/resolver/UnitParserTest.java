@@ -77,11 +77,11 @@ public class UnitParserTest {
         assertEquals(Set.of(Units.KiloGM_F__M__PER__SEC),
                      UnitParser.fromSymbol("kgf⋅m/s"));
 
-        // Test with dot subsitute.
+        // Test with dot substitute.
         assertEquals(Set.of(Units.KiloGM_F__M__PER__SEC),
                      UnitParser.fromSymbol("kgf.m/s"));
 
-        // Test with underscore subsitute.
+        // Test with underscore substitute.
         assertEquals(Set.of(Units.KiloGM_F__M__PER__SEC),
                      UnitParser.fromSymbol("kgf_m/s"));                     
 
