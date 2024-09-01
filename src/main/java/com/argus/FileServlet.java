@@ -69,7 +69,7 @@ public class FileServlet
         }
         else if (uri.equals("/settings")) {
             if (Authentication.isAuthorisedForAdminAccess(request)) {
-                // React web pages. Currenty only /settings.
+                // React web pages. Currently only /settings.
                 InputStream input =
                     new ClassPathResource("/web/app.html")
                     .getInputStream();
