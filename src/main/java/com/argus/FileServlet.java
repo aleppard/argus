@@ -91,6 +91,15 @@ public class FileServlet
             if (resource.exists()) {
                 InputStream input = resource.getInputStream();
                 ByteStreams.copy(input, response.getOutputStream());
+
+                // Cache the landing page which should change very infrequently.
+                // One of the features of Argus is speed so let the browser cache
+                // this page to avoid delays.
+                if (uri.equals("/index.html")) {
+                    final int maxAgeInSeconds = 60*60*24; // 1 day
+                    response.addHeader("Cache-Control",
+                                       "max-age=" + maxAgeInSeconds + ", public");
+                }
                 response.setStatus(HttpServletResponse.SC_OK);
             }
             else {
