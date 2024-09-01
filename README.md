@@ -39,8 +39,8 @@ Other supported bang commands include:
 | --- | --- |
 | `!gh` | Run the query directly on GitHub |
 | `!so` | Run the query directly on StackOverflow |
-| `!w` | Run the query direclty on Wikipedia |
-| `!yt` | Run the query direclty on YouTube |
+| `!w` | Run the query directly on Wikipedia |
+| `!yt` | Run the query directly on YouTube |
 
 To run the query directly on a specific search engine:
 
@@ -243,7 +243,7 @@ Future improvements could include:
   (e.g. replacements for Alexa, Siri, etc).
 * Calculate hashes of UTF-8 text strings.
 * Additional colour decoding, naming of colour (perhaps using ML) and
-  also HTML colour names and coverting to other colour spaces.
+  also HTML colour names and converting to other colour spaces.
 * Ability to search and return books, stories, plays, poetry, proverbs,
   fables, librettos, lyrics etc that are no longer under copyright.
   Perhaps integrate https://github.com/Lyrics/lyrics
@@ -276,6 +276,8 @@ Future improvements could include:
   * Convert wavelength to/from frequency.
   * Generate sound from frequency (Hz), from wavelength, from note 
     (e.g. "middle-c"), chord name, text or phonetics.
+* Add ability to upload two files and compare (json, yaml, binary,
+  text, ...).
 
 ## Building and running from Source
 
