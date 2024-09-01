@@ -34,8 +34,9 @@ public class QueryServlet
         boolean isLocalQueryOnly = false;
         
         // @todo Should we also collapse double spaces here?
-        final String queryParameter = request.getParameter("q").trim();
-        String queryString = queryParameter;
+        final String queryParameter = request.getParameter("q") != null?
+            request.getParameter("q") : "";
+        String queryString = queryParameter.trim();
         
         // Queries prefixed with "! " are only run locally and are not
         // passed on to an external search engine.
