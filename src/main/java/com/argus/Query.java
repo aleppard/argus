@@ -23,17 +23,24 @@ public class Query {
         this.context = context;
         this.rawQuery = query.trim();
 
-        // @todo This should also collapse double spaces etc.
-        this.normalisedQuery = this.rawQuery.toLowerCase();
-
+        // Create a normalised version of the string that converts it
+        // to lower case, removes leading and trailing whitespace and
+        // normalises and collapses the remaining white space.
+        this.normalisedQuery =
+            this.rawQuery.toLowerCase().trim().replaceAll("\\s+", " ");
+        
         this.wordList = buildWordList(this.rawQuery);
         this.normalisedWordList = buildWordList(this.normalisedQuery);
     }
 
     private static List<String> buildWordList
         (final String queryString) {
-        return Arrays.stream(queryString.split("\\s"))
-            .map(word -> word.trim())
+        // We need to collapse spaces before splitting to avoid
+        // empty elements.
+        return Arrays.stream(queryString
+                             .trim()
+                             .replaceAll("\\s+", " ")
+                             .split(" "))
             .collect(Collectors.toList());
     }
     
