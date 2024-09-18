@@ -118,7 +118,7 @@ public class TableQueryResult implements QueryResult {
             response.setStatus(HttpServletResponse.SC_OK);
         }
         catch (Exception exception) {
-            LOGGER.log(Level.SEVERE, "Error returning single query result.",
+            LOGGER.log(Level.SEVERE, "Error returning table query result.",
                        exception);            
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
