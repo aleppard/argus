@@ -15,7 +15,8 @@ Argus provides three major benefits over using a search engine
 directly:
 
 * Enhanced privacy.
-* Increased performance for queries that can be performed locally.
+* Increased performance for queries especially those that can be
+  performed locally.
 * Reduced reliance on network access. Locally performed queries do not
   require network access.
 
@@ -127,6 +128,11 @@ characters based on their name.
 | unicode greek | List all Greek unicode characters |
 | U+2714 | Information about U+2714 HEAVY CHECK MARK (✔) |
 
+### Dictionary
+
+Argus supports looking up words in a dictionary which can be
+separately downloaded.
+
 ### Word Pattern Matching
 
 Argus supports matching words based on a pattern.
@@ -202,7 +208,7 @@ Future improvements could include:
 * Set up a public site running Argus (possibly an Onion site).
 * Add "copy to clipboard" button for locally returned results.
 * Add ability to hit return twice to forward locally returned results
-  directly to DuckDuckGo (e.g. if a locally returned result is not
+  directly to public search engine (e.g. if a locally returned result is not
   sufficient).
 * Custom bang commands.
 * Support more bang commands.
@@ -225,16 +231,14 @@ Future improvements could include:
   perhaps share those index results with other Argus users,
   e.g. peer-to-peer web indexing.
 * Support search of local images using ML.
-* A model to translate questions into standardised queries
-  (e.g. BERT).
 * A LLM to answer questions.
-  * Perhaps trained on
-    Wikipedia/Wikidata/[DBpedia](https://www.dbpedia.org).
-  * Or use an OpenSource LLM.
-* Support a local copy of Wikipedia/Wikidata/DBpedia.
+  * Integration with third party LLMs.
+  * Support for RAG (going through Argus).
+* Support a local copy of Wikipedia/Wikidata/[DBpedia](https://www.dbpedia.org).
 * Support parsing and querying the semantic web (i.e. owl, json+ld, rdf etc).
 * Support a local copy of OpenStreetMap.
-* An integrated dictionary to handle spelling, definitions, anagrams, pronunciation etc.
+* Improve dictionary to include tags, groups, anagrams, pronunciation
+  etc.
 * An integrated thesaurus to handle synonyms, antonyms etc.
 * Ability to translate words and phrases. Perhaps we can integrate
   [FreeDict](https://freedict.org/).
