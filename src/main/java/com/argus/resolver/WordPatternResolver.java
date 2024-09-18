@@ -39,6 +39,7 @@ public class WordPatternResolver implements Resolver
         words = new ArrayList<>();
 
         try {
+            // @todo Perhaps generate this from the dictionary used by DictionaryResolver.
             InputStream inputStream =
                 new ClassPathResource("/word_list.txt").getInputStream();
             InputStreamReader inputStreamReader =
