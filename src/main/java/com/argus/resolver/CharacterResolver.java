@@ -12,12 +12,16 @@ import com.argus.TableQueryResult;
  * @todo Support taking code points/HTML and converting to character, e.g.
  * "U+2714" and "&#10004" should both return this page for the tick
  * character.
- * @todo For letters it should say which letter of the alphabet it is.
+ * @todo For letters it should say which letter of the alphabet it is,
+ * including for non-English alphabets.
  */
 public class CharacterResolver implements Resolver
 {
     public @Override QueryResult tryResolve(final Query query) {
-        final String queryString = query.getNormalisedString();
+        // We don't want to get the normalised string as this would
+        // convert letters to lower case.
+        final String queryString =
+            query.getRawString().trim().replaceAll("\\s+", " ");
         final int codePoints[] = queryString.codePoints().toArray();
         if (codePoints.length != 1) {
             return null;
