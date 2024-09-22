@@ -20,12 +20,18 @@ import java.util.Map;
 
 import java.util.logging.Logger;
 
+import org.apache.commons.text.similarity.LevenshteinDistance;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 /**
  * Returns dictionary definition of word or phrase.
+ *
+ * This also supportrs looking up mispelt words if the user includes the word "spell", 
+ * "spelling" or even just "sp", e.g. "sp thoroug" should return the dictionary definition 
+ * for "thorough".
  */
 public class DictionaryResolver implements Resolver
 {
@@ -187,15 +193,86 @@ public class DictionaryResolver implements Resolver
             LOGGER.info("Error reading file " + PROCESSED_FILE_NAME + ".");
         }
     }
+
+    private static boolean isSpellingWordOrAbbreviation(final String word) {
+        // @todo Also mispelling, mispelt etc.
+        return (word.equals("spell") ||
+                word.equals("spelling") ||
+                word.equals("speling") ||
+                word.equals("sp"));
+    }
+
+    private QueryResult findMispeltWord(final Query query,
+                                        final String mispeltWord) {
+        // @todo We could use a BK-Tree for faster spell check but I don't think we
+        // need it.
+        int bestScore = Integer.MAX_VALUE;
+        String bestWord = null;
+        List<DictionaryEntry> bestEntries = null;
+
+        // There is no need to calculate the exact distance between vastly different
+        // words, e.g. pet and elephant.
+        LevenshteinDistance levenshteinDistance = new LevenshteinDistance(4);
+
+        for (final String dictionaryWord : dictionary.keySet()) {
+            Integer distance = levenshteinDistance.apply(mispeltWord, dictionaryWord);
+            if (distance == -1) continue;
+            if (distance <= bestScore) {
+                // @todo For equal scores, compare by word frequency to return the most
+                // likely match.
+                // @todo For equal scores, preference words that start with the same
+                // letter.
+                // @todo If a word is small don't suggest another word that has all
+                // the letters (or most) changed.
+                // @todo Get smarter than using L. distance as it doesn't take into
+                // account how humans are likely to mispel words.
+                bestScore = distance;
+                bestWord = dictionaryWord;
+                bestEntries = dictionary.get(dictionaryWord);
+            }
+        }
+
+        if (bestWord == null) return null;
+        
+        return new DictionaryDefinitionQueryResult(query,
+                                                   bestWord,
+                                                   bestEntries);
+    }
     
     public @Override QueryResult tryResolve(final Query query) {
         if (dictionary.isEmpty()) return null;
 
+        // Do we have an exact match?
         final String queryString = query.getNormalisedString();
         final List<DictionaryEntry> entries = dictionary.get(queryString);
         if (entries != null) {
             return new DictionaryDefinitionQueryResult(query, queryString,
                                                        entries);
+        }
+
+        // If not see if the user is looking up the spelling of a word.
+        
+        // We say "word" here but the dictionary does have multi-word terms
+        // too, e.g. "mens rea".
+        final List<String> normalisedWordList = query.getNormalisedWordList();
+        if (normalisedWordList.size() >= 2) {
+            if (isSpellingWordOrAbbreviation(normalisedWordList.get(0))) {
+                return findMispeltWord(query,
+                                       String.join
+                                       (" ",
+                                        normalisedWordList.subList
+                                        (1,
+                                         normalisedWordList.size())));
+            }
+            else if (isSpellingWordOrAbbreviation(normalisedWordList.get
+                                                  (normalisedWordList.size() - 1))) {
+                return findMispeltWord(query,
+                                       String.join
+                                       (" ",
+                                        normalisedWordList.subList
+                                        (0,
+                                         normalisedWordList.size() - 1)));
+            }
         }
         
         return null;

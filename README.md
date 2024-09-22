@@ -128,10 +128,21 @@ characters based on their name.
 | unicode greek | List all Greek unicode characters |
 | U+2714 | Information about U+2714 HEAVY CHECK MARK (✔) |
 
-### Dictionary
+### Dictionary and spell checker
 
 Argus supports looking up words in a dictionary which can be
 separately downloaded.
+
+| example query | result |
+| --- | --- |
+| mens rea | Definition of 'mens rea' |
+| spelling men rea | Definition of 'mens rea' | 
+| spell men rea | Definition of 'mens rea' | 
+| sp men rea | Definition of 'mens rea' | 
+| men rea spelling | Definition of 'mens rea' | 
+| men rea spell | Definition of 'mens rea' | 
+| men rea sp | Definition of 'mens rea' | 
+
 
 ### Word Pattern Matching
 
