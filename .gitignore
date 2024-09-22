@@ -1,2 +1,4 @@
 target
 .DS_Store
+processed-wiktextract-data.jsonl
+raw-wiktextract-data.jsonl
