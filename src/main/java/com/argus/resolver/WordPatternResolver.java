@@ -21,11 +21,14 @@ import org.springframework.core.io.ClassPathResource;
 /**
  * A query that returns a list of words that match a pattern.
  * A pattern should consist of a single group of letters with at
- * least one question mark, e.g. "h?ve" which would match
- * "have", "hive" and "hove".
+ * least one question mark or asterix, e.g. "h?ve" which would match
+ * "have", "hive" and "hove"; "hav*" would match "have", "having" and
+ * others too!).
  *
  * @todo Generate word list dynamically, e.g. from Wikipedia.
  * @todo Returned words should have links to dictionary definitions.
+ * @todo It would be good to be able to sort these words alphabetically or by
+ * length.
  */
 public class WordPatternResolver implements Resolver
 {
@@ -33,7 +36,7 @@ public class WordPatternResolver implements Resolver
     private List<String> words = null;
 
     private Pattern lettersAndQuestionMarks =
-        Pattern.compile("[a-zA-Z\\?]{2,}");
+        Pattern.compile("[a-zA-Z\\?\\*]{2,}");
 
     private List<String> loadWords() {
         words = new ArrayList<>();
@@ -75,22 +78,40 @@ public class WordPatternResolver implements Resolver
     }
 
     /**
-     * Given a word, pattern, e.g. "h?ve" return if the given word
-     * matches that pattern; e.g. in this case "have" would but "home"
-     * wouldn't.
+     * Convert the input query string into a regular expression.
      */
-    public boolean matches(final String pattern, final String word) {
-        if (pattern.length() != word.length()) return false;
+    private Pattern generateRegularExpression(final String queryString) {
+        String patternString = "";
+        for (int i = 0; i < queryString.length(); i++) {
+            final char character = queryString.charAt(i);
+            
+            if (character == '?') {
+                patternString += '.';
+            }
+            else if (character == '*') {
+                patternString += ".*";
+            }
+            else {
+                patternString += Character.toLowerCase(character);
+            }
+        }
+        
+        return Pattern.compile(patternString);
+    }
+    
+    private List<String> findMatchingWords(final String queryString,
+                                           final List<String> words) {
+        List<String> matchingWords = new ArrayList<>();
+        Pattern regularExpression = generateRegularExpression(queryString);
 
-        for (int i = 0; i < pattern.length(); i++) {
-            if (pattern.charAt(i) == '?') continue;
-            if (Character.toLowerCase(pattern.charAt(i)) !=
-                Character.toLowerCase(word.charAt(i))) {
-                return false;
+        // @todo Do this functionally.
+        for (final String word : words) {
+            if (regularExpression.matcher(word.toLowerCase()).matches()) {
+                matchingWords.add(word);
             }
         }
 
-        return true;
+        return matchingWords;
     }
     
     public @Override QueryResult tryResolve(final Query query) {
@@ -102,20 +123,20 @@ public class WordPatternResolver implements Resolver
             return null;
         }
 
-        // Ignore any query that doesn't contain a question mark.
-        if (!queryString.contains("?")) {
+        // Ignore any query that doesn't contain a question mark or asterix.
+        if (!queryString.contains("?") &&
+            !queryString.contains("*")) {
             return null;
         }
 
-        final List<String> words = getWords();
-
-        final List<String> matchingWords = new ArrayList<>();
-        for (final String word : words) {
-            if (matches(queryString, word)) {
-                matchingWords.add(word);
-            }
+        // Having two consective asterixes doesn't make a lot of sense,
+        // so maybe this isn't a word pattern request.
+        if (queryString.contains("**")) {
+            return null;
         }
-
+        
+        final List<String> words = getWords();
+        final List<String> matchingWords = findMatchingWords(queryString, words);
         if (matchingWords.size() == 0) return null;
 
         return new SingleQueryResult(query,

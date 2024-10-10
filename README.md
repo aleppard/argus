@@ -151,6 +151,7 @@ Argus supports matching words based on a pattern.
 | example query | result |
 | --- | --- |
 | h?ve | have, hive, hove | 
+| hav* | have, having, haven, ... |
 
 ### Time
 
